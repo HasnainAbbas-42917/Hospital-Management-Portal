@@ -17,8 +17,9 @@
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">Hospital Portal</div>
-      <nav>
+        <nav>
         <a href="/doctor/dashboard" class="{% if active == 'appointments' %}active{% endif %}">Appointments</a>
+        <a href="/doctor/patients" class="{% if active == 'patients' %}active{% endif %}">My Patients</a>
         <a href="/doctor/profile" class="{% if active == 'profile' %}active{% endif %}">My Profile</a>
         <a href="/doctor/attendance" class="{% if active == 'attendance' %}active{% endif %}">Attendance</a>
         <a href="#" onclick="logout(); return false;">Logout</a>

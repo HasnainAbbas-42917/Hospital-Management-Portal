@@ -135,7 +135,7 @@ def update_appointment_status(
 
 
 # ---------- Patients (only patients this doctor has appointments with) ----------
-@router.get("/patients", response_model=List[schemas.PatientOut])
+@router.get("/patients")
 def my_patients(
     current_user: models.User = Depends(require_role("doctor")),
     db: Session = Depends(get_db),
@@ -144,7 +144,41 @@ def my_patients(
     patient_ids = db.query(models.Appointment.patient_id).filter(
         models.Appointment.doctor_id == doctor.id
     ).distinct()
-    return db.query(models.Patient).filter(models.Patient.id.in_(patient_ids)).all()
+    patients = db.query(models.Patient).filter(models.Patient.id.in_(patient_ids)).all()
+
+    result = []
+    for p in patients:
+        appts = db.query(models.Appointment).filter(
+            models.Appointment.doctor_id == doctor.id,
+            models.Appointment.patient_id == p.id,
+        ).order_by(models.Appointment.appointment_date.desc()).all()
+
+        result.append({
+            "id": p.id,
+            "name": p.name,
+            "phone": p.phone,
+            "gender": p.gender,
+            "dob": p.dob,
+            "address": p.address,
+            "total_appointments": len(appts),
+            "last_visit_date": appts[0].appointment_date if appts else None,
+            "last_visit_status": appts[0].status if appts else None,
+        })
+    return result
+
+
+@router.get("/patients/{patient_id}/appointments", response_model=List[schemas.AppointmentOut])
+def patient_appointment_history(
+    patient_id: int,
+    current_user: models.User = Depends(require_role("doctor")),
+    db: Session = Depends(get_db),
+):
+    doctor = get_doctor_profile(current_user, db)
+    appointments = db.query(models.Appointment).filter(
+        models.Appointment.doctor_id == doctor.id,
+        models.Appointment.patient_id == patient_id,
+    ).order_by(models.Appointment.appointment_date.desc()).all()
+    return appointments
 
 
 # ---------- Medical Records ----------

@@ -1,0 +1,26 @@
+{% extends "doctor/base_doctor.html" %}
+{% block title %}My Patients — Doctor Portal{% endblock %}
+
+{% block content %}
+  <h1>My patients</h1>
+  <p class="text-muted">Patients who have booked an appointment with you.</p>
+
+  <div id="patientsList" class="mt-24"></div>
+
+  <!-- Patient Detail Modal -->
+  <div class="modal-overlay" id="patientModal">
+    <div class="modal-box" style="max-width:480px;">
+      <div class="flex-between">
+        <h3 id="patientModalName">Patient</h3>
+        <button class="modal-close" onclick="closePatientModal()">&times;</button>
+      </div>
+      <div id="patientDetails" class="mt-24"></div>
+      <h3 style="font-size:1rem; margin-top:20px;">Appointment history</h3>
+      <div id="patientHistory"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/doctor_patients.js"></script>
+{% endblock %}
