@@ -287,16 +287,18 @@ def all_reviews(
     reviews = db.query(models.Review).order_by(models.Review.created_at.desc()).all()
     result = []
     for r in reviews:
+        patient = db.query(models.Patient).filter(models.Patient.id == r.patient_id).first()
+        doctor = db.query(models.Doctor).filter(models.Doctor.id == r.doctor_id).first()
         result.append({
             "id": r.id,
             "rating": r.rating,
             "comment": r.comment,
             "created_at": r.created_at,
             "patient_id": r.patient_id,
-            "patient_name": r.patient.name if r.patient else "Unknown",
+            "patient_name": patient.name if patient else "Unknown",
             "doctor_id": r.doctor_id,
-            "doctor_name": r.doctor.name if r.doctor else "Unknown",
-            "doctor_specialization": r.doctor.specialization if r.doctor else None,
+            "doctor_name": doctor.name if doctor else "Unknown",
+            "doctor_specialization": doctor.specialization if doctor else None,
         })
     return result
 
