@@ -9,15 +9,36 @@
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <div class="topbar-mobile">
+    <div class="topbar-mobile">
     <span class="brand">Hospital Portal</span>
-    <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
+    <div style="display:flex; align-items:center;">
+      <div class="notif-bell-wrap">
+        <button class="notif-bell">🔔<span class="notif-badge"></span></button>
+        <div class="notif-panel">
+          <div class="notif-panel-header">
+            <h4>Notifications</h4>
+            <button class="notif-mark-all" onclick="markAllNotifRead()">Mark all read</button>
+          </div>
+          <div class="notif-list"></div>
+        </div>
+      </div>
+      <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
+    </div>
   </div>
 
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">Hospital Portal</div>
-      <nav>
+      <div class="notif-bell-wrap">
+        <button class="notif-bell">🔔<span class="notif-badge"></span></button>
+        <div class="notif-panel">
+          <div class="notif-panel-header">
+            <h4>Notifications</h4>
+            <button class="notif-mark-all" onclick="markAllNotifRead()">Mark all read</button>
+          </div>
+          <div class="notif-list"></div>
+        </div>
+      </div>      <nav>
         <a href="/patient/dashboard" class="{% if active == 'dashboard' %}active{% endif %}">Find Doctors</a>
         <a href="/patient/appointments" class="{% if active == 'appointments' %}active{% endif %}">My Appointments</a>
         <a href="/patient/profile" class="{% if active == 'profile' %}active{% endif %}">My Profile</a>
@@ -30,10 +51,11 @@
     </main>
   </div>
 
-  <script src="/static/js/api.js"></script>
+    <script src="/static/js/api.js"></script>
   <script>
     if (!requireAuth("patient")) { /* redirected already */ }
   </script>
+  <script src="/static/js/notifications.js"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>
