@@ -1,0 +1,80 @@
+{% extends "receptionist/base_receptionist.html" %}
+{% block title %}Appointments — Receptionist Portal{% endblock %}
+
+{% block content %}
+  <h1>Appointments</h1>
+  <p class="text-muted">Confirm, cancel, reschedule, and verify payments for all appointment requests.</p>
+
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" data-status="">All</button>
+    <button class="filter-tab" data-status="pending">Pending</button>
+    <button class="filter-tab" data-status="confirmed">Confirmed</button>
+    <button class="filter-tab" data-status="completed">Completed</button>
+    <button class="filter-tab" data-status="cancelled">Cancelled</button>
+  </div>
+
+  <div id="appointmentsList"></div>
+
+  <!-- Reschedule Modal -->
+  <div class="modal-overlay" id="rescheduleModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3>Reschedule appointment</h3>
+        <button class="modal-close" onclick="closeRescheduleModal()">&times;</button>
+      </div>
+      <div id="rescheduleAlert" class="alert"></div>
+      <form id="rescheduleForm">
+        <input type="hidden" id="rescheduleAppointmentId">
+        <input type="hidden" id="rescheduleDoctorId">
+        <div class="field">
+          <label for="newDate">New date</label>
+          <input type="date" id="newDate" required>
+        </div>
+        <div class="field">
+          <label for="newTime">New time</label>
+          <input type="time" id="newTime" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Confirm new time</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Payment Modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3>Verify payment</h3>
+        <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+      </div>
+      <div id="paymentAlert" class="alert"></div>
+      <form id="paymentForm">
+        <input type="hidden" id="paymentAppointmentId">
+        <div class="field">
+          <label for="amount">Amount (Rs.)</label>
+          <input type="number" id="amount" min="0" required>
+        </div>
+        <div class="field">
+          <label for="method">Payment method</label>
+          <select id="method">
+            <option value="cash">Cash</option>
+            <option value="card">Card</option>
+            <option value="bank_transfer">Bank Transfer</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="paymentStatus">Status</label>
+          <select id="paymentStatus">
+            <option value="verified">Verified</option>
+            <option value="pending">Pending</option>
+            <option value="failed">Failed</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save payment</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/receptionist_appointments.js"></script>
+{% endblock %}

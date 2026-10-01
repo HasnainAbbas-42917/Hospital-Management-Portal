@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Doctor Portal{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="topbar-mobile">
+    <span class="brand">Hospital Portal</span>
+    <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">Hospital Portal</div>
+      <nav>
+        <a href="/doctor/dashboard" class="{% if active == 'appointments' %}active{% endif %}">Appointments</a>
+        <a href="/doctor/profile" class="{% if active == 'profile' %}active{% endif %}">My Profile</a>
+        <a href="/doctor/attendance" class="{% if active == 'attendance' %}active{% endif %}">Attendance</a>
+        <a href="#" onclick="logout(); return false;">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    if (!requireAuth("doctor")) { /* redirected already */ }
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

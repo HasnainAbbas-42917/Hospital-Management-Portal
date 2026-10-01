@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Login — Hospital Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="auth-shell">
+    <div class="auth-brand">
+      <h1>Hospital Appointment & Management Portal</h1>
+      <p>One place for patients to find the right doctor, and for staff to manage every appointment — simply and reliably.</p>
+    </div>
+
+    <div class="auth-form-side">
+      <div class="auth-form-box">
+        <h2>Welcome back</h2>
+        <p class="text-muted">Log in to continue to your portal.</p>
+
+        <div id="alert" class="alert"></div>
+
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" required placeholder="you@example.com">
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        </form>
+
+        <p class="text-muted mt-24">
+          Don't have an account? <a href="/register">Register here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/api.js"></script>
+  <script>
+    const form = document.getElementById("loginForm");
+    const alertBox = document.getElementById("alert");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const body = new URLSearchParams();
+      body.append("username", email);
+      body.append("password", password);
+
+      try {
+        const data = await apiFetch("/auth/login", { method: "POST", body });
+        saveSession(data.access_token, data.role);
+
+        const destinations = {
+          admin: "/admin/dashboard",
+          doctor: "/doctor/dashboard",
+          receptionist: "/receptionist/dashboard",
+          patient: "/patient/dashboard",
+        };
+        window.location.href = destinations[data.role] || "/login";
+      } catch (err) {
+        showAlert(alertBox, err.message);
+      }
+    });
+  </script>
+</body>
+</html>

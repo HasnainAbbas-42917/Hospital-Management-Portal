@@ -1,0 +1,20 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Patients — Admin Portal{% endblock %}
+
+{% block content %}
+  <h1>Patients</h1>
+  <p class="text-muted">All registered patients and their contact details.</p>
+
+  <div class="table-scroll mt-24">
+    <table class="simple-table">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Phone</th><th>Gender</th><th>Date of birth</th><th>Address</th></tr>
+      </thead>
+      <tbody id="patientsBody"></tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_patients.js"></script>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends "doctor/base_doctor.html" %}
+{% block title %}My Profile — Doctor Portal{% endblock %}
+
+{% block content %}
+  <h1>My profile</h1>
+  <p class="text-muted">This information is shown to the hospital administration and, once approved, to patients.</p>
+
+  <div id="statusBanner" class="alert mt-24"></div>
+
+  <div class="card mt-24">
+    <div id="profileAlert" class="alert"></div>
+    <form id="profileForm">
+      <div class="profile-grid">
+        <div class="field">
+          <label for="doctorName">Full name</label>
+          <input type="text" id="doctorName" placeholder="e.g. Dr. Ahmed Khan">
+        </div>
+        <div class="field">
+          <label for="specialization">Specialization</label>
+          <input type="text" id="specialization" placeholder="e.g. Cardiology">
+        </div>
+        <div class="field">
+          <label for="experience_years">Years of experience</label>
+          <input type="number" id="experience_years" min="0">
+        </div>
+        <div class="field">
+          <label>Consultation fee (Rs.)</label>
+          <input type="text" id="feeDisplay" disabled>
+          <p class="text-muted" style="font-size:0.78rem; margin-top:4px;">Set by hospital administration.</p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="bio">Bio</label>
+        <textarea id="bio" rows="3" placeholder="A short summary patients will see"></textarea>
+      </div>
+      <div class="field">
+        <label for="scheduleNote">Requested working days / hours (note to admin)</label>
+        <textarea id="scheduleNote" rows="2" placeholder="e.g. I would like to work Mon–Wed, mornings only"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save profile</button>
+    </form>
+  </div>
+
+  <h2 class="mt-24">Weekly availability</h2>
+  <p class="text-muted">Once approved by the hospital, patients can only book within these time windows.</p>
+
+  <div id="availabilityAlert" class="alert"></div>
+  <div id="availabilityList"></div>
+
+  <div class="card">
+    <h3>Add a time slot</h3>
+    <div class="add-availability-form">
+      <div class="field" style="margin-bottom:0;">
+        <label for="dayOfWeek">Day</label>
+        <select id="dayOfWeek">
+          <option value="0">Monday</option>
+          <option value="1">Tuesday</option>
+          <option value="2">Wednesday</option>
+          <option value="3">Thursday</option>
+          <option value="4">Friday</option>
+          <option value="5">Saturday</option>
+          <option value="6">Sunday</option>
+        </select>
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="startTime">From</label>
+        <input type="time" id="startTime" value="09:00">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="endTime">To</label>
+        <input type="time" id="endTime" value="17:00">
+      </div>
+      <div class="field" style="margin-bottom:0;">
+        <label for="slotDuration">Slot (min)</label>
+        <input type="number" id="slotDuration" value="30" min="10">
+      </div>
+      <button class="btn btn-primary" onclick="addAvailability()">Add</button>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/doctor_profile.js"></script>
+{% endblock %}

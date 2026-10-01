@@ -1,0 +1,45 @@
+{% extends "patient/base_patient.html" %}
+{% block title %}My Profile — Patient Portal{% endblock %}
+
+{% block content %}
+  <h1>My profile</h1>
+  <p class="text-muted">Keep your contact details up to date so the hospital can reach you about your appointments.</p>
+
+  <div class="card mt-24 container-narrow">
+    <div id="profileAlert" class="alert"></div>
+    <form id="profileForm">
+      <div class="field">
+        <label for="pName">Full name</label>
+        <input type="text" id="pName" required>
+      </div>
+      <div class="field">
+        <label for="pPhone">Phone number</label>
+        <input type="tel" id="pPhone" placeholder="e.g. 0300 1234567">
+      </div>
+      <div class="profile-grid">
+        <div class="field">
+          <label for="pDob">Date of birth</label>
+          <input type="date" id="pDob">
+        </div>
+        <div class="field">
+          <label for="pGender">Gender</label>
+          <select id="pGender">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="pAddress">Address</label>
+        <textarea id="pAddress" rows="2" placeholder="Street, area, city"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save profile</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/patient_profile.js"></script>
+{% endblock %}

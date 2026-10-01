@@ -1,0 +1,13 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Appointments — Admin Portal{% endblock %}
+
+{% block content %}
+  <h1>All appointments</h1>
+  <p class="text-muted">Every appointment across the entire system.</p>
+
+  <div id="appointmentsList" class="mt-24"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_appointments.js"></script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Attendance — Admin Portal{% endblock %}
+
+{% block content %}
+  <h1>Staff attendance</h1>
+  <p class="text-muted">Check-in and check-out records for doctors and receptionists (Pakistan time).</p>
+
+  <div class="table-scroll mt-24">
+    <table class="simple-table">
+      <thead>
+        <tr><th>Staff member</th><th>Role</th><th>Date</th><th>Check-in</th><th>Check-out</th><th>Status</th></tr>
+      </thead>
+      <tbody id="attendanceBody"></tbody>
+    </table>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_attendance.js"></script>
+{% endblock %}

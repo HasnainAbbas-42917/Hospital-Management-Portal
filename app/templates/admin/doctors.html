@@ -1,0 +1,57 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Doctors — Admin Portal{% endblock %}
+
+{% block content %}
+  <h1>Doctors</h1>
+  <p class="text-muted">Review applications and manage doctors working at the hospital.</p>
+
+  <div class="filter-tabs" id="tabSwitch">
+    <button class="filter-tab active" data-tab="applications">Applications</button>
+    <button class="filter-tab" data-tab="active">Active Doctors</button>
+  </div>
+
+  <div id="applicationsTab">
+    <div id="applicationsList"></div>
+  </div>
+
+  <div id="activeTab" style="display:none;">
+    <div id="activeDoctorsList" class="doctor-grid"></div>
+  </div>
+
+  <!-- Fee Modal -->
+  <div class="modal-overlay" id="feeModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3>Set consultation fee</h3>
+        <button class="modal-close" onclick="closeFeeModal()">&times;</button>
+      </div>
+      <div id="feeAlert" class="alert"></div>
+      <form id="feeForm">
+        <input type="hidden" id="feeDoctorId">
+        <div class="field">
+          <label for="feeAmount">Fee (Rs.)</label>
+          <input type="number" id="feeAmount" min="0" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save fee</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Schedule Modal -->
+  <div class="modal-overlay" id="scheduleModal">
+    <div class="modal-box" style="max-width:520px;">
+      <div class="flex-between">
+        <h3 id="scheduleTitle">Schedule</h3>
+        <button class="modal-close" onclick="closeScheduleModal()">&times;</button>
+      </div>
+      <h3 style="font-size:1rem;">Weekly working days</h3>
+      <div id="scheduleWeekly"></div>
+      <h3 style="font-size:1rem; margin-top:20px;">Upcoming appointments</h3>
+      <div id="scheduleUpcoming"></div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_doctors.js"></script>
+{% endblock %}

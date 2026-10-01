@@ -1,0 +1,40 @@
+{% extends "patient/base_patient.html" %}
+{% block title %}My Appointments — Patient Portal{% endblock %}
+
+{% block content %}
+  <h1>My appointments</h1>
+  <p class="text-muted">Track the status of your requests and leave a review after a completed visit.</p>
+
+  <div id="appointmentsList" class="mt-24"></div>
+
+  <!-- Review Modal -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3>Leave a review</h3>
+        <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+      </div>
+      <div id="reviewAlert" class="alert"></div>
+      <form id="reviewForm">
+        <input type="hidden" id="reviewAppointmentId">
+        <label>Rating</label>
+        <div class="star-input" id="starInput">
+          <span data-value="1">&#9733;</span>
+          <span data-value="2">&#9733;</span>
+          <span data-value="3">&#9733;</span>
+          <span data-value="4">&#9733;</span>
+          <span data-value="5">&#9733;</span>
+        </div>
+        <div class="field">
+          <label for="reviewComment">Comment (optional)</label>
+          <textarea id="reviewComment" rows="3" placeholder="How was your experience?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit review</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/appointments.js"></script>
+{% endblock %}

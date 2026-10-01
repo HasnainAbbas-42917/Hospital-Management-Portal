@@ -1,0 +1,48 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Receptionists — Admin Portal{% endblock %}
+
+{% block content %}
+  <div class="flex-between">
+    <div>
+      <h1>Receptionists</h1>
+      <p class="text-muted">Manage the hospital's front-desk staff accounts.</p>
+    </div>
+    <button class="btn btn-primary" onclick="openAddModal()">+ Add Receptionist</button>
+  </div>
+
+  <div id="receptionistsList" class="mt-24"></div>
+
+  <!-- Add Receptionist Modal -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3>Add receptionist</h3>
+        <button class="modal-close" onclick="closeAddModal()">&times;</button>
+      </div>
+      <div id="addAlert" class="alert"></div>
+      <form id="addForm">
+        <div class="field">
+          <label for="rName">Full name</label>
+          <input type="text" id="rName" required>
+        </div>
+        <div class="field">
+          <label for="rEmail">Email</label>
+          <input type="email" id="rEmail" required>
+        </div>
+                <div class="field">
+          <label for="rPhone">Phone number</label>
+          <input type="tel" id="rPhone" placeholder="e.g. 0300 1234567">
+        </div>
+        <div class="field">
+          <label for="rPassword">Temporary password</label>
+          <input type="password" id="rPassword" required minlength="6">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/admin_receptionists.js"></script>
+{% endblock %}

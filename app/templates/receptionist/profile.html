@@ -1,0 +1,26 @@
+{% extends "receptionist/base_receptionist.html" %}
+{% block title %}My Profile — Receptionist Portal{% endblock %}
+
+{% block content %}
+  <h1>My profile</h1>
+  <p class="text-muted">Your details are visible to the hospital administration.</p>
+
+  <div class="card mt-24 container-narrow">
+    <div id="profileAlert" class="alert"></div>
+    <form id="profileForm">
+      <div class="field">
+        <label for="rName">Full name</label>
+        <input type="text" id="rName" required>
+      </div>
+      <div class="field">
+        <label for="rPhone">Phone number</label>
+        <input type="tel" id="rPhone" placeholder="e.g. 0300 1234567">
+      </div>
+      <button type="submit" class="btn btn-primary">Save profile</button>
+    </form>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/receptionist_profile.js"></script>
+{% endblock %}

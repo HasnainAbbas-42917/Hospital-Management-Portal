@@ -1,0 +1,40 @@
+{% extends "doctor/base_doctor.html" %}
+{% block title %}Appointments — Doctor Portal{% endblock %}
+
+{% block content %}
+  <h1>My appointments</h1>
+  <p class="text-muted">Update the status of each visit and add medical records after a consultation.</p>
+
+  <div id="appointmentsList" class="mt-24"></div>
+
+  <!-- Medical Record Modal -->
+  <div class="modal-overlay" id="recordModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3>Add medical record</h3>
+        <button class="modal-close" onclick="closeRecordModal()">&times;</button>
+      </div>
+      <div id="recordAlert" class="alert"></div>
+      <form id="recordForm">
+        <input type="hidden" id="recordAppointmentId">
+        <div class="field">
+          <label for="diagnosis">Diagnosis</label>
+          <textarea id="diagnosis" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="prescription">Prescription</label>
+          <textarea id="prescription" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="notes">Notes</label>
+          <textarea id="notes" rows="2"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save record</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/doctor_appointments.js"></script>
+{% endblock %}
