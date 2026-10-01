@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 from app.database import get_db
 from app.deps import require_role
 from app import models, schemas, security
+from app.services.notification_service import create_notification
 
 router = APIRouter(prefix="/admin", tags=["Admin Portal"])
 
@@ -336,3 +337,101 @@ def summary_report(
         "appointments_completed": completed,
         "appointments_cancelled": cancelled,
     }
+# ---------- Admin: Full Appointment Management ----------
+@router.patch("/appointments/{appointment_id}/confirm", response_model=schemas.AppointmentOut)
+def admin_confirm_appointment(
+    appointment_id: int,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    appointment = db.query(models.Appointment).filter(models.Appointment.id == appointment_id).first()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+
+    appointment.status = models.AppointmentStatus.confirmed
+    db.commit()
+    db.refresh(appointment)
+
+    patient_user_id = appointment.patient.user_id
+    create_notification(db, patient_user_id, f"Your appointment on {appointment.appointment_date} at {appointment.appointment_time} has been confirmed.")
+
+    return appointment
+
+
+@router.patch("/appointments/{appointment_id}/cancel", response_model=schemas.AppointmentOut)
+def admin_cancel_appointment(
+    appointment_id: int,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    appointment = db.query(models.Appointment).filter(models.Appointment.id == appointment_id).first()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+
+    appointment.status = models.AppointmentStatus.cancelled
+    db.commit()
+    db.refresh(appointment)
+
+    patient_user_id = appointment.patient.user_id
+    create_notification(db, patient_user_id, f"Your appointment on {appointment.appointment_date} at {appointment.appointment_time} has been cancelled.")
+
+    return appointment
+
+
+@router.patch("/appointments/{appointment_id}/reschedule", response_model=schemas.AppointmentOut)
+def admin_reschedule_appointment(
+    appointment_id: int,
+    appt_in: schemas.AppointmentCreate,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    appointment = db.query(models.Appointment).filter(models.Appointment.id == appointment_id).first()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+
+    conflict = db.query(models.Appointment).filter(
+        models.Appointment.doctor_id == appointment.doctor_id,
+        models.Appointment.appointment_date == appt_in.appointment_date,
+        models.Appointment.appointment_time == appt_in.appointment_time,
+        models.Appointment.id != appointment_id,
+        models.Appointment.status.in_([models.AppointmentStatus.pending, models.AppointmentStatus.confirmed]),
+    ).first()
+    if conflict:
+        raise HTTPException(status_code=409, detail="New slot is already booked")
+
+    appointment.appointment_date = appt_in.appointment_date
+    appointment.appointment_time = appt_in.appointment_time
+    db.commit()
+    db.refresh(appointment)
+    return appointment
+
+
+@router.post("/appointments/{appointment_id}/payment", response_model=schemas.PaymentVerify)
+def admin_verify_payment(
+    appointment_id: int,
+    payment_in: schemas.PaymentVerify,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    appointment = db.query(models.Appointment).filter(models.Appointment.id == appointment_id).first()
+    if not appointment:
+        raise HTTPException(status_code=404, detail="Appointment not found")
+
+    existing = db.query(models.Payment).filter(models.Payment.appointment_id == appointment_id).first()
+    if existing:
+        existing.amount = payment_in.amount
+        existing.method = payment_in.method
+        existing.status = payment_in.status
+        db.commit()
+        db.refresh(existing)
+        return payment_in
+
+    payment = models.Payment(
+        appointment_id=appointment_id,
+        amount=payment_in.amount,
+        method=payment_in.method,
+        status=payment_in.status,
+    )
+    db.add(payment)
+    db.commit()
+    return payment_in
