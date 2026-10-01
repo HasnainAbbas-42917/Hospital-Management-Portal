@@ -215,10 +215,14 @@ def list_patients(
 # ---------- View All Appointments ----------
 @router.get("/appointments")
 def all_appointments(
+    status: Optional[models.AppointmentStatus] = None,
     current_user: models.User = Depends(require_role("admin")),
     db: Session = Depends(get_db),
 ):
-    appointments = db.query(models.Appointment).all()
+    query = db.query(models.Appointment)
+    if status:
+        query = query.filter(models.Appointment.status == status)
+    appointments = query.all()
     result = []
     for a in appointments:
         result.append({
