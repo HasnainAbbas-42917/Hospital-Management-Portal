@@ -102,3 +102,7 @@ def receptionist_profile(request: Request):
 @router.get("/doctor/patients", response_class=HTMLResponse, include_in_schema=False)
 def doctor_patients(request: Request):
     return templates.TemplateResponse(request, "doctor/patients.html", {"active": "patients"})
+
+@router.get("/patient/records", response_class=HTMLResponse, include_in_schema=False)
+def patient_records(request: Request):
+    return templates.TemplateResponse(request, "patient/records.html", {"active": "records"})

@@ -100,6 +100,7 @@ class MedicalRecordOut(BaseModel):
     diagnosis: Optional[str]
     prescription: Optional[str]
     notes: Optional[str]
+    created_at: datetime
 
 
 # ---------- Appointment status update ----------

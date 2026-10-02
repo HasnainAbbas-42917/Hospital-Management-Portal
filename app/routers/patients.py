@@ -85,3 +85,29 @@ def my_appointments(
 ):
     patient = get_patient_profile(current_user, db)
     return db.query(models.Appointment).filter(models.Appointment.patient_id == patient.id).all()
+
+@router.get("/medical-records")
+def my_medical_records(
+    current_user: models.User = Depends(require_role("patient")),
+    db: Session = Depends(get_db),
+):
+    patient = get_patient_profile(current_user, db)
+    records = db.query(models.MedicalRecord).filter(
+        models.MedicalRecord.patient_id == patient.id
+    ).order_by(models.MedicalRecord.created_at.desc()).all()
+
+    result = []
+    for r in records:
+        appointment = db.query(models.Appointment).filter(models.Appointment.id == r.appointment_id).first()
+        doctor = db.query(models.Doctor).filter(models.Doctor.id == r.doctor_id).first()
+        result.append({
+            "id": r.id,
+            "diagnosis": r.diagnosis,
+            "prescription": r.prescription,
+            "notes": r.notes,
+            "created_at": r.created_at,
+            "doctor_name": doctor.name if doctor else "Unknown",
+            "doctor_specialization": doctor.specialization if doctor else None,
+            "appointment_date": appointment.appointment_date if appointment else None,
+        })
+    return result

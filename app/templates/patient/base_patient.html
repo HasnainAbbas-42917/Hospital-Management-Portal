@@ -38,9 +38,11 @@
           </div>
           <div class="notif-list"></div>
         </div>
-      </div>      <nav>
+      </div>      
+        <nav>
         <a href="/patient/dashboard" class="{% if active == 'dashboard' %}active{% endif %}">Find Doctors</a>
         <a href="/patient/appointments" class="{% if active == 'appointments' %}active{% endif %}">My Appointments</a>
+        <a href="/patient/records" class="{% if active == 'records' %}active{% endif %}">Medical Records</a>
         <a href="/patient/profile" class="{% if active == 'profile' %}active{% endif %}">My Profile</a>
         <a href="#" onclick="logout(); return false;">Logout</a>
       </nav>
