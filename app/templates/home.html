@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hospital Portal — Quality Care, Simply Booked</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✚</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-auth">
+
+  <nav class="public-nav">
+    <div class="public-nav-inner">
+      <a href="/" class="public-brand">✚ Hospital Portal</a>
+      <div class="public-nav-links" id="publicNavLinks">
+        <a href="#top">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#services">Services</a>
+        <a href="#doctors">Our Doctors</a>
+      </div>
+      <a href="/login" class="btn btn-primary public-nav-login">Login</a>
+      <button class="public-nav-toggle" onclick="document.getElementById('publicNavLinks').classList.toggle('show')">☰</button>
+    </div>
+  </nav>
+
+  <header class="public-hero" id="top">
+    <div class="public-hero-text">
+      <span class="role-banner">✚ Trusted Healthcare</span>
+      <h1>Quality care, booked simply.</h1>
+      <p>Find the right doctor for your needs, check their availability, and book your appointment online — then let our staff take care of the rest.</p>
+      <div class="public-hero-actions">
+        <a href="#doctors" class="btn btn-primary">Find a Doctor</a>
+        <a href="/login" class="btn btn-secondary">Login to Your Portal</a>
+      </div>
+    </div>
+    <div class="public-hero-art" aria-hidden="true">
+      <div class="hero-circle hero-circle-1"></div>
+      <div class="hero-circle hero-circle-2"></div>
+      <div class="hero-cross">✚</div>
+    </div>
+  </header>
+
+  <section class="public-section" id="about">
+    <h2>About our hospital</h2>
+    <p class="public-section-lead">
+      We bring together specialists across more than a dozen fields of medicine, combined with a simple
+      online booking system — so patients spend less time waiting and staff spend less time on paperwork.
+      Every appointment is tracked from request to confirmation to consultation, with clear records kept
+      for both patients and doctors.
+    </p>
+    <div class="public-stats-row">
+      <div class="public-stat"><div class="public-stat-number">10+</div><div class="public-stat-label">Specializations</div></div>
+      <div class="public-stat"><div class="public-stat-number">24/7</div><div class="public-stat-label">Online booking</div></div>
+      <div class="public-stat"><div class="public-stat-number">100%</div><div class="public-stat-label">Verified doctors</div></div>
+    </div>
+  </section>
+
+  <section class="public-section public-section-alt" id="services">
+    <h2>Our services</h2>
+    <p class="public-section-lead">A wide range of specialities under one roof.</p>
+    <div class="service-grid">
+      <div class="service-card"><div class="service-icon">❤</div><h3>Cardiology</h3><p>Heart health, hypertension management, and preventive care.</p></div>
+      <div class="service-card"><div class="service-icon">🦴</div><h3>Orthopedics</h3><p>Bone, joint, and sports injury treatment.</p></div>
+      <div class="service-card"><div class="service-icon">🧴</div><h3>Dermatology</h3><p>Skin health, allergies, and cosmetic concerns.</p></div>
+      <div class="service-card"><div class="service-icon">🧠</div><h3>Neurology</h3><p>Diagnosis and treatment of nervous system conditions.</p></div>
+      <div class="service-card"><div class="service-icon">🤱</div><h3>Gynecology</h3><p>Women's health at every stage of life.</p></div>
+      <div class="service-card"><div class="service-icon">🧒</div><h3>Pediatrics</h3><p>Dedicated care for infants, children, and teens.</p></div>
+    </div>
+  </section>
+
+  <section class="public-section" id="doctors">
+    <h2>Find your doctor</h2>
+    <p class="public-section-lead">Search by specialization and book with a doctor approved by our hospital administration.</p>
+    <div class="search-bar" style="max-width:420px;">
+      <input type="text" id="homeSpecialization" placeholder="e.g. Cardiology, Dermatology...">
+      <button class="btn btn-primary" onclick="searchPublicDoctors()">Search</button>
+    </div>
+    <div id="homeDoctorsGrid" class="doctor-grid mt-24"></div>
+  </section>
+
+  <footer class="public-footer">
+    <div class="public-footer-inner">
+      <div class="public-footer-col">
+        <div class="public-brand" style="color:#fff;">✚ Hospital Portal</div>
+        <p>Quality healthcare, simply booked. Serving patients with trusted, verified doctors across every major specialization.</p>
+      </div>
+      <div class="public-footer-col">
+        <h4>Quick Links</h4>
+        <a href="#top">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#services">Services</a>
+        <a href="#doctors">Our Doctors</a>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      </div>
+      <div class="public-footer-col">
+        <h4>Contact & Location</h4>
+        <p>123 Main Boulevard, Islamabad, Pakistan</p>
+        <p>+92 300 1234567</p>
+        <p>info@hospitalportal.example</p>
+      </div>
+    </div>
+    <div class="public-footer-bottom">
+      &copy; 2026 Hospital Portal. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/home.js"></script>
+</body>
+</html>

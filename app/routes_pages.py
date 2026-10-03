@@ -17,8 +17,8 @@ def register_page(request: Request):
 
 
 @router.get("/", response_class=HTMLResponse, include_in_schema=False)
-def root_redirect(request: Request):
-    return templates.TemplateResponse(request, "login.html", {})
+def home_page(request: Request):
+    return templates.TemplateResponse(request, "home.html", {})
 
 
 @router.get("/patient/dashboard", response_class=HTMLResponse, include_in_schema=False)
