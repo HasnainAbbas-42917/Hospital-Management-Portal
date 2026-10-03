@@ -748,3 +748,38 @@ body.bg-auth {
   border-radius: 999px;
   margin-bottom: 16px;
 }
+
+.nav-more-wrap { position: relative; }
+.nav-more-menu {
+  display: none;
+  position: fixed; bottom: 62px; right: 12px;
+  background: var(--color-surface); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25); min-width: 170px; overflow: hidden; z-index: 500;
+}
+.nav-more-menu.show { display: block; }
+.sidebar .nav-more-menu a {
+  display: block; padding: 12px 16px; color: var(--color-ink);
+  font-size: 0.85rem; text-align: left; font-weight: 500;
+}
+.sidebar .nav-more-menu a:hover { background: var(--color-primary-soft); }
+
+@media (min-width: 861px) {
+  .nav-more-wrap { display: contents; }
+  .nav-more-toggle { display: none; }
+  .nav-more-menu { display: contents; }
+}
+
+.sidebar .brand { margin-bottom: 2px; }
+.sidebar-subtitle {
+  margin: 0 0 24px 36px;
+  color: rgba(255,255,255,0.62);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.topbar-subtitle {
+  color: rgba(255,255,255,0.75);
+  font-size: 0.68rem;
+  margin-top: -2px;
+}

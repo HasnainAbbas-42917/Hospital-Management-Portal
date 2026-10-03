@@ -4,29 +4,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Admin Portal{% endblock %}</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✚</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-admin">
   <div class="topbar-mobile">
-    <span class="brand">Hospital Portal</span>
+    <div>
+      <div class="brand" style="font-size:1rem; margin-bottom:0;">Hospital Portal</div>
+      <div class="topbar-subtitle">Admin Portal</div>
+    </div>    
     <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
   </div>
 
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">Hospital Portal</div>
+      <div class="sidebar-subtitle">Admin Portal</div>
         <nav>
-        <a href="/admin/dashboard" class="{% if active == 'overview' %}active{% endif %}">Administration</a>        
+        <a href="/admin/dashboard" class="{% if active == 'overview' %}active{% endif %}">Administration</a>
         <a href="/admin/manage-doctors" class="{% if active == 'doctors' %}active{% endif %}">Doctors</a>
         <a href="/admin/manage-receptionists" class="{% if active == 'receptionists' %}active{% endif %}">Receptionists</a>
         <a href="/admin/manage-patients" class="{% if active == 'patients' %}active{% endif %}">Patients</a>
         <a href="/admin/manage-appointments" class="{% if active == 'appointments' %}active{% endif %}">Appointments</a>
-        <a href="/admin/manage-attendance" class="{% if active == 'attendance' %}active{% endif %}">Attendance</a>
-        <a href="/admin/manage-reviews" class="{% if active == 'reviews' %}active{% endif %}">Reviews</a>
-        <a href="#" onclick="logout(); return false;">Logout</a>
-        </nav>
+        <div class="nav-more-wrap">
+          <a href="#" class="nav-more-toggle" onclick="toggleAdminMore(event)">More ▾</a>
+          <div class="nav-more-menu" id="adminMoreMenu">
+            <a href="/admin/manage-attendance" class="{% if active == 'attendance' %}active{% endif %}">Attendance</a>
+            <a href="/admin/manage-reviews" class="{% if active == 'reviews' %}active{% endif %}">Reviews</a>
+            <a href="#" onclick="logout(); return false;">Logout</a>
+          </div>
+        </div>
+      </nav>
     </aside>
 
     <main class="main-content">

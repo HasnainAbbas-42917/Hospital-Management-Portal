@@ -110,3 +110,14 @@ function formatTime12(timeStr) {
   const hour12 = h % 12 === 0 ? 12 : h % 12;
   return `${hour12}:${String(m).padStart(2, "0")} ${suffix}`;
 }
+
+function toggleAdminMore(e) {
+  e.preventDefault();
+  document.getElementById("adminMoreMenu").classList.toggle("show");
+}
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".nav-more-wrap")) {
+    const m = document.getElementById("adminMoreMenu");
+    if (m) m.classList.remove("show");
+  }
+});

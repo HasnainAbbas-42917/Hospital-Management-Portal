@@ -4,19 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Doctor Portal{% endblock %}</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✚</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-doctor">
   <div class="topbar-mobile">
-    <span class="brand">Hospital Portal</span>
-    <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
+    <div>
+      <div class="brand" style="font-size:1rem; margin-bottom:0;">Hospital Portal</div>
+      <div class="topbar-subtitle">Doctor Portal</div>
+    </div>  
+      <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
   </div>
 
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand">Hospital Portal</div>
+      <div class="sidebar-subtitle">Doctor Portal</div>
         <nav>
         <a href="/doctor/dashboard" class="{% if active == 'appointments' %}active{% endif %}">Appointments</a>
         <a href="/doctor/patients" class="{% if active == 'patients' %}active{% endif %}">My Patients</a>
