@@ -536,3 +536,190 @@ table.simple-table td { padding: 12px; border-bottom: 1px solid var(--color-bord
 @media (min-width: 861px) {
   .topbar-mobile { display: none !important; }
 }
+
+
+/* ============================================================
+   ROLE-THEMED SYSTEM — background, sidebar, navbar, footer
+   ============================================================ */
+
+:root {
+  --role-primary: #0E5D56;
+  --role-dark: #073F3A;
+  --role-glow: #0E5D5633;
+}
+
+/* ---- Page background: soft gradient + large blurred color blobs + subtle cross pattern ---- */
+body.bg-patient, body.bg-doctor, body.bg-receptionist, body.bg-admin, body.bg-auth {
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body.bg-patient {
+  --role-primary: #0E5D56; --role-dark: #073F3A; --role-light: #E4F2EE;
+  background-color: #F2FBF8;
+  background-image:
+    radial-gradient(900px 500px at 92% -6%, #BCE8DD 0%, transparent 60%),
+    radial-gradient(700px 500px at -8% 108%, #FFE3B0 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M32 16v32M16 32h32' stroke='%230E5D56' stroke-width='2' stroke-linecap='round' opacity='0.07'/%3E%3C/svg%3E");
+}
+
+body.bg-doctor {
+  --role-primary: #1A5276; --role-dark: #0F3550; --role-light: #E3EEF4;
+  background-color: #F1F8FC;
+  background-image:
+    radial-gradient(900px 500px at 92% -6%, #BBDCEE 0%, transparent 60%),
+    radial-gradient(700px 500px at -8% 108%, #D6E8F4 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M32 16v32M16 32h32' stroke='%231A5276' stroke-width='2' stroke-linecap='round' opacity='0.07'/%3E%3C/svg%3E");
+}
+
+body.bg-receptionist {
+  --role-primary: #C4841E; --role-dark: #8C5A14; --role-light: #FBF1DE;
+  background-color: #FFF8EC;
+  background-image:
+    radial-gradient(900px 500px at 92% -6%, #F7D9A6 0%, transparent 60%),
+    radial-gradient(700px 500px at -8% 108%, #F3C9B0 0%, transparent 55%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M32 16v32M16 32h32' stroke='%23C4841E' stroke-width='2' stroke-linecap='round' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+body.bg-admin {
+  --role-primary: #1F3864; --role-dark: #121F3A; --role-light: #E4E9F3;
+  background-color: #F0F2F8;
+  background-image:
+    radial-gradient(900px 500px at 92% -6%, #C7D0E8 0%, transparent 60%),
+    radial-gradient(700px 500px at -8% 108%, #E8D9A8 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cpath d='M32 16v32M16 32h32' stroke='%231F3864' stroke-width='2' stroke-linecap='round' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+body.bg-auth {
+  --role-primary: #0E5D56; --role-dark: #073F3A;
+  background-color: #F2FBF8;
+  background-image:
+    radial-gradient(1000px 600px at 100% 0%, #BCE8DD 0%, transparent 60%),
+    radial-gradient(800px 600px at 0% 100%, #FFE3B0 0%, transparent 55%);
+}
+
+/* ---- Sidebar: rich gradient in the role's color, light text ---- */
+.sidebar {
+  background: linear-gradient(165deg, var(--role-primary) 0%, var(--role-dark) 100%);
+  border-right: none;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+}
+.sidebar .brand {
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar .brand::before {
+  content: "✚";
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+.sidebar nav a {
+  color: rgba(255,255,255,0.78);
+  font-weight: 500;
+}
+.sidebar nav a:hover {
+  background: rgba(255,255,255,0.12);
+  color: #ffffff;
+}
+.sidebar nav a.active {
+  background: rgba(255,255,255,0.18);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}
+
+/* ---- Mobile top bar + bottom tab bar: match the role gradient ---- */
+.topbar-mobile {
+  background: linear-gradient(100deg, var(--role-primary) 0%, var(--role-dark) 100%);
+}
+.topbar-mobile .brand { display: flex; align-items: center; gap: 8px; }
+.topbar-mobile .brand::before { content: "✚"; opacity: 0.85; }
+
+@media (max-width: 860px) {
+  .sidebar {
+    background: linear-gradient(100deg, var(--role-primary) 0%, var(--role-dark) 100%);
+  }
+}
+
+/* ---- Footer ---- */
+.portal-footer {
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+}
+.portal-footer strong { color: var(--role-primary); }
+
+/* ---- Keep interior surfaces crisp and readable over the textured background ---- */
+.card, .doctor-card, .appointment-item, .availability-row,
+.stat-card, table.simple-table, .auth-form-box, .modal-box {
+  background-color: var(--color-surface);
+}
+
+/* ---- Auth pages: give the brand panel the same rich gradient + decorative cross ---- */
+.auth-brand {
+  background: linear-gradient(160deg, var(--role-primary) 0%, var(--role-dark) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.auth-brand::before {
+  content: "";
+  position: absolute;
+  width: 420px; height: 420px;
+  right: -140px; top: -140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 70%);
+}
+.auth-brand::after {
+  content: "✚";
+  position: absolute;
+  font-size: 14rem;
+  color: rgba(255,255,255,0.05);
+  right: -20px; bottom: -40px;
+  line-height: 1;
+}
+.auth-brand h1, .auth-brand p { position: relative; z-index: 1; }
+
+/* ---------- Password field with show/hide eye toggle ---------- */
+.password-field-wrap {
+  position: relative;
+}
+.password-field-wrap input {
+  padding-right: 42px;
+}
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: var(--color-ink-soft);
+  line-height: 1;
+  padding: 4px;
+}
+.password-toggle:hover { color: var(--color-ink); }
+
+/* ---------- Footer: tighter spacing on mobile, clear of the fixed bottom nav ---------- */
+@media (max-width: 860px) {
+  .portal-footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    font-size: 0.72rem;
+  }
+  .main-content {
+    padding-bottom: 100px; /* extra room so content + footer never sit under the fixed bottom nav */
+  }
+}

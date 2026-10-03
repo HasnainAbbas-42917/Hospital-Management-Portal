@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="bg-auth">
   <div class="auth-shell">
     <div class="auth-brand">
       <h1>Hospital Appointment & Management Portal</h1>
@@ -29,7 +29,10 @@
           </div>
           <div class="field">
             <label for="password">Password</label>
-            <input type="password" id="password" required placeholder="••••••••">
+            <div class="password-field-wrap">
+              <input type="password" id="password" required placeholder="••••••••">
+              <button type="button" class="password-toggle" onclick="togglePassword('password', this)">&#128065;</button>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
@@ -41,8 +44,19 @@
     </div>
   </div>
 
+  <footer class="portal-footer" style="margin-top:0; padding:16px; border-top:none;">
+    <strong>Hospital Portal</strong> — Patient, Doctor, Receptionist & Admin access
+  </footer>
+
   <script src="/static/js/api.js"></script>
   <script>
+    function togglePassword(fieldId, btn) {
+      const input = document.getElementById(fieldId);
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+      btn.innerHTML = isHidden ? "&#128584;" : "&#128065;";
+    }
+
     const form = document.getElementById("loginForm");
     const alertBox = document.getElementById("alert");
 

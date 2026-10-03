@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
+<body class="bg-patient">
     <div class="topbar-mobile">
     <span class="brand">Hospital Portal</span>
     <div style="display:flex; align-items:center;">
@@ -50,6 +50,7 @@
 
     <main class="main-content">
       {% block content %}{% endblock %}
+            <footer class="portal-footer"><strong>Hospital Portal</strong> — Patient Portal</footer>
     </main>
   </div>
 
