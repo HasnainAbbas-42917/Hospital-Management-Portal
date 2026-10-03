@@ -17,6 +17,7 @@
 
     <div class="auth-form-side">
       <div class="auth-form-box">
+          <div class="role-banner">✚ <span id="roleBannerText">Patient Registration</span></div>
         <h2>Register</h2>
 
         <div class="role-tabs" id="roleTabs">
@@ -73,6 +74,7 @@
         document.querySelectorAll(".role-tab").forEach((t) => t.classList.remove("active"));
         tab.classList.add("active");
         selectedRole = tab.dataset.role;
+        document.getElementById("roleBannerText").textContent = tab.dataset.role.charAt(0).toUpperCase() + tab.dataset.role.slice(1) + " Registration";
       });
     });
 

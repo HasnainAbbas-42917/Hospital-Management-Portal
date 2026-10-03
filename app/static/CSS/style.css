@@ -723,3 +723,28 @@ body.bg-auth {
     padding-bottom: 100px; /* extra room so content + footer never sit under the fixed bottom nav */
   }
 }
+
+/* ---------- Auth card: proper elevated look ---------- */
+.auth-form-box {
+  background: var(--color-surface);
+  border-radius: 16px;
+  padding: 36px 32px;
+  box-shadow: 0 20px 50px rgba(14, 93, 86, 0.14), 0 2px 8px rgba(14, 93, 86, 0.08);
+  border: 1px solid rgba(255,255,255,0.6);
+}
+
+/* Role banner shown above "Welcome back" on the login page */
+.role-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--role-light, var(--color-primary-soft));
+  color: var(--role-primary, var(--color-primary));
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}

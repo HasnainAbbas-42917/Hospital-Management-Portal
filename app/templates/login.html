@@ -17,6 +17,14 @@
 
     <div class="auth-form-side">
       <div class="auth-form-box">
+        <div class="role-tabs" id="roleTabs">
+          <button type="button" class="role-tab active" data-role="Patient">Patient</button>
+          <button type="button" class="role-tab" data-role="Doctor">Doctor</button>
+          <button type="button" class="role-tab" data-role="Receptionist">Receptionist</button>
+          <button type="button" class="role-tab" data-role="Admin">Admin</button>
+        </div>
+
+        <div class="role-banner">✚ <span id="roleBannerText">Patient Login Portal</span></div>
         <h2>Welcome back</h2>
         <p class="text-muted">Log in to continue to your portal.</p>
 
@@ -56,6 +64,14 @@
       input.type = isHidden ? "text" : "password";
       btn.innerHTML = isHidden ? "&#128584;" : "&#128065;";
     }
+
+    document.querySelectorAll(".role-tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".role-tab").forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById("roleBannerText").textContent = tab.dataset.role + " Login Portal";
+      });
+    });
 
     const form = document.getElementById("loginForm");
     const alertBox = document.getElementById("alert");
