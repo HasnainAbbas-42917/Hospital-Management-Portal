@@ -10,12 +10,15 @@
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-patient">
-    <div class="topbar-mobile">
-    <div>
-      <div class="brand" style="font-size:1rem; margin-bottom:0;">Hospital Portal</div>
-      <div class="topbar-subtitle">Patient Portal</div>
+      <div class="topbar-mobile">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="brand" style="font-size:1rem; margin-bottom:0;">Hospital Portal</div>
+        <div class="topbar-subtitle">Patient Portal</div>
+      </div>
     </div>
-        <div style="display:flex; align-items:center;">
+    <div style="display:flex; align-items:center;">
       <div class="notif-bell-wrap">
         <button class="notif-bell">🔔<span class="notif-badge"></span></button>
         <div class="notif-panel">
@@ -28,6 +31,8 @@
       </div>
       <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
     </div>
+  </div>
+  <div class="sidebar-overlay" onclick="closeSidebar()">
   </div>
 
   <div class="app-shell">

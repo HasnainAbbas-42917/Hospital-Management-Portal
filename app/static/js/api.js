@@ -111,13 +111,19 @@ function formatTime12(timeStr) {
   return `${hour12}:${String(m).padStart(2, "0")} ${suffix}`;
 }
 
-function toggleAdminMore(e) {
-  e.preventDefault();
-  document.getElementById("adminMoreMenu").classList.toggle("show");
+function toggleSidebar() {
+  document.querySelector(".sidebar")?.classList.toggle("show");
+  document.querySelector(".sidebar-overlay")?.classList.toggle("show");
 }
+
+function closeSidebar() {
+  document.querySelector(".sidebar")?.classList.remove("show");
+  document.querySelector(".sidebar-overlay")?.classList.remove("show");
+}
+
+// Close the drawer automatically when a nav link is tapped
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".nav-more-wrap")) {
-    const m = document.getElementById("adminMoreMenu");
-    if (m) m.classList.remove("show");
+  if (e.target.closest(".sidebar nav a")) {
+    closeSidebar();
   }
 });

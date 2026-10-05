@@ -234,24 +234,6 @@ a:hover { text-decoration: underline; }
 .main-content { flex: 1; padding: 32px 40px; max-width: 1100px; }
 .topbar-mobile { display: none; }
 
-@media (max-width: 860px) {
-  .sidebar {
-    position: fixed; bottom: 0; left: 0; right: 0; top: auto; width: 100%;
-    display: flex; flex-direction: row; justify-content: space-around;
-    padding: 8px 4px; border-right: none; border-top: 1px solid var(--color-border);
-    z-index: 50;
-  }
-  .sidebar .brand { display: none; }
-  .sidebar nav { display: flex; width: 100%; justify-content: space-around; }
-  .sidebar nav a { text-align: center; font-size: 0.72rem; padding: 6px 4px; }
-  .main-content { padding: 20px 16px 90px; }
-  .topbar-mobile {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 16px; background: var(--color-primary); color: white;
-  }
-  .topbar-mobile .brand { font-family: var(--font-display); font-size: 1.1rem; }
-}
-
 .container-narrow { max-width: 640px; }
 .text-muted { color: var(--color-ink-soft); font-size: 0.88rem; }
 .mt-24 { margin-top: 24px; }
@@ -460,10 +442,6 @@ table.simple-table td { padding: 12px; border-bottom: 1px solid var(--color-bord
 .table-scroll { overflow-x: auto; }
 .table-scroll table.simple-table { min-width: 620px; }
 
-@media (max-width: 860px) {
-  .sidebar nav { overflow-x: auto; }
-  .sidebar nav a { flex: 1 0 auto; white-space: nowrap; padding: 6px 10px; }
-}
 
 /* ---------- Notification Bell ---------- */
 .notif-bell-wrap { position: relative; }
@@ -642,11 +620,6 @@ body.bg-auth {
 .topbar-mobile .brand { display: flex; align-items: center; gap: 8px; }
 .topbar-mobile .brand::before { content: "✚"; opacity: 0.85; }
 
-@media (max-width: 860px) {
-  .sidebar {
-    background: linear-gradient(100deg, var(--role-primary) 0%, var(--role-dark) 100%);
-  }
-}
 
 /* ---- Footer ---- */
 .portal-footer {
@@ -712,17 +685,7 @@ body.bg-auth {
 .password-toggle:hover { color: var(--color-ink); }
 
 /* ---------- Footer: tighter spacing on mobile, clear of the fixed bottom nav ---------- */
-@media (max-width: 860px) {
-  .portal-footer {
-    margin-top: 24px;
-    padding-top: 12px;
-    padding-bottom: 8px;
-    font-size: 0.72rem;
-  }
-  .main-content {
-    padding-bottom: 100px; /* extra room so content + footer never sit under the fixed bottom nav */
-  }
-}
+
 
 /* ---------- Auth card: proper elevated look ---------- */
 .auth-form-box {
@@ -747,26 +710,6 @@ body.bg-auth {
   padding: 6px 14px;
   border-radius: 999px;
   margin-bottom: 16px;
-}
-
-.nav-more-wrap { position: relative; }
-.nav-more-menu {
-  display: none;
-  position: fixed; bottom: 62px; right: 12px;
-  background: var(--color-surface); border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.25); min-width: 170px; overflow: hidden; z-index: 500;
-}
-.nav-more-menu.show { display: block; }
-.sidebar .nav-more-menu a {
-  display: block; padding: 12px 16px; color: var(--color-ink);
-  font-size: 0.85rem; text-align: left; font-weight: 500;
-}
-.sidebar .nav-more-menu a:hover { background: var(--color-primary-soft); }
-
-@media (min-width: 861px) {
-  .nav-more-wrap { display: contents; }
-  .nav-more-toggle { display: none; }
-  .nav-more-menu { display: contents; }
 }
 
 .sidebar .brand { margin-bottom: 2px; }
@@ -875,4 +818,84 @@ body.bg-auth {
 }
 @media (max-width: 760px) {
   .public-footer-inner { grid-template-columns: 1fr; text-align: center; }
+}
+
+/* ============================================================
+   MOBILE: slide-in sidebar drawer (replaces old bottom tab bar)
+   ============================================================ */
+.hamburger-btn {
+  display: none;
+  background: none; border: none; color: #fff;
+  font-size: 1.5rem; cursor: pointer; padding: 2px 6px; line-height: 1;
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(10, 20, 30, 0.45);
+  z-index: 390;
+}
+.sidebar-overlay.show { display: block; }
+
+@media (max-width: 860px) {
+  .topbar-mobile {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px;
+    background: linear-gradient(100deg, var(--role-primary, var(--color-primary)) 0%, var(--role-dark, var(--color-primary-dark)) 100%);
+    color: white;
+    position: sticky; top: 0; z-index: 300;
+  }
+  .topbar-mobile .brand { font-family: var(--font-display); }
+  .hamburger-btn { display: inline-block; }
+
+  .sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 260px; height: 100vh;
+    background: linear-gradient(165deg, var(--role-primary, var(--color-primary)) 0%, var(--role-dark, var(--color-primary-dark)) 100%);
+    flex-direction: column;
+    padding: 20px 16px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    z-index: 400;
+    overflow-y: auto;
+    border-right: none;
+  }
+  .sidebar.show { transform: translateX(0); }
+  .sidebar .brand { display: flex; }
+  .sidebar .sidebar-subtitle { display: block; }
+  .sidebar nav {
+    display: flex; flex-direction: column;
+    overflow-x: visible; width: auto;
+  }
+  .sidebar nav a {
+    text-align: left; font-size: 0.92rem; padding: 11px 12px;
+    flex: none; white-space: normal;
+  }
+
+  .main-content { padding: 20px 16px 48px; }
+
+  .portal-footer {
+    margin-top: 24px;
+    padding-top: 12px;
+    padding-bottom: 8px;
+    font-size: 0.72rem;
+  }
+}
+
+@media (min-width: 861px) {
+  .sidebar-overlay { display: none !important; }
+}
+
+.back-to-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  margin-bottom: 20px;
+}
+.back-to-home:hover {
+  color: var(--color-primary);
+  text-decoration: none;
 }

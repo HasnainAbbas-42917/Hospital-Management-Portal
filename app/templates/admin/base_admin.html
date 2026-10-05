@@ -11,12 +11,16 @@
 </head>
 <body class="bg-admin">
   <div class="topbar-mobile">
-    <div>
-      <div class="brand" style="font-size:1rem; margin-bottom:0;">Hospital Portal</div>
-      <div class="topbar-subtitle">Admin Portal</div>
-    </div>    
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="hamburger-btn" onclick="toggleSidebar()">☰</button>
+      <div>
+        <div class="brand" style="font-size:1rem; margin-bottom:0;">Hospital Portal</div>
+        <div class="topbar-subtitle">Admin Portal</div>
+      </div>
+    </div>
     <button class="btn btn-secondary" style="padding:6px 12px;" onclick="logout()">Logout</button>
   </div>
+  <div class="sidebar-overlay" onclick="closeSidebar()"></div>
 
   <div class="app-shell">
     <aside class="sidebar">
@@ -28,14 +32,9 @@
         <a href="/admin/manage-receptionists" class="{% if active == 'receptionists' %}active{% endif %}">Receptionists</a>
         <a href="/admin/manage-patients" class="{% if active == 'patients' %}active{% endif %}">Patients</a>
         <a href="/admin/manage-appointments" class="{% if active == 'appointments' %}active{% endif %}">Appointments</a>
-        <div class="nav-more-wrap">
-          <a href="#" class="nav-more-toggle" onclick="toggleAdminMore(event)">More ▾</a>
-          <div class="nav-more-menu" id="adminMoreMenu">
-            <a href="/admin/manage-attendance" class="{% if active == 'attendance' %}active{% endif %}">Attendance</a>
-            <a href="/admin/manage-reviews" class="{% if active == 'reviews' %}active{% endif %}">Reviews</a>
-            <a href="#" onclick="logout(); return false;">Logout</a>
-          </div>
-        </div>
+        <a href="/admin/manage-attendance" class="{% if active == 'attendance' %}active{% endif %}">Attendance</a>
+        <a href="/admin/manage-reviews" class="{% if active == 'reviews' %}active{% endif %}">Reviews</a>
+        <a href="#" onclick="logout(); return false;">Logout</a>
       </nav>
     </aside>
 
