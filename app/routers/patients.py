@@ -64,6 +64,39 @@ def search_doctors(
     return query.all()
 
 
+@router.get("/public/statistics")
+def public_statistics(db: Session = Depends(get_db)):
+    approved_doctors = db.query(models.Doctor).filter(models.Doctor.status == "approved")
+    specializations = [
+        name for (name,) in db.query(models.Doctor.specialization)
+        .filter(
+            models.Doctor.status == "approved",
+            models.Doctor.specialization.isnot(None),
+            models.Doctor.specialization != "",
+        )
+        .distinct()
+        .order_by(models.Doctor.specialization)
+        .all()
+    ]
+    appointment_counts = {
+        status.value: db.query(models.Appointment).filter(
+            models.Appointment.status == status
+        ).count()
+        for status in models.AppointmentStatus
+    }
+
+    return {
+        "total_doctors": approved_doctors.count(),
+        "specializations": specializations,
+        "total_patients": db.query(models.Patient).count(),
+        "total_appointments": db.query(models.Appointment).count(),
+        "appointments_pending": appointment_counts[models.AppointmentStatus.pending.value],
+        "appointments_confirmed": appointment_counts[models.AppointmentStatus.confirmed.value],
+        "appointments_completed": appointment_counts[models.AppointmentStatus.completed.value],
+        "appointments_cancelled": appointment_counts[models.AppointmentStatus.cancelled.value],
+    }
+
+
 @router.post("/me", response_model=schemas.PatientOut)
 def create_my_profile(
     profile_in: schemas.PatientProfileCreate,
