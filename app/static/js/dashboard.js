@@ -1,3 +1,5 @@
+let pendingDoctorId = new URLSearchParams(window.location.search).get("doctor_id");
+
 async function searchDoctors() {
   const specialization = document.getElementById("specialization").value.trim();
   const keyword = document.getElementById("keyword").value.trim();
@@ -38,6 +40,12 @@ function renderDoctors(doctors) {
       <button class="btn btn-primary btn-block" onclick="openBookingModal(${doc.id}, '${doc.name.replace(/'/g, "")}')">Book appointment</button>
     </div>
   `).join("");
+
+  if (pendingDoctorId) {
+    const doctor = doctors.find((item) => item.id === Number(pendingDoctorId));
+    pendingDoctorId = null;
+    if (doctor) openBookingModal(doctor.id, doctor.name);
+  }
 }
 
 function openBookingModal(doctorId, doctorName) {

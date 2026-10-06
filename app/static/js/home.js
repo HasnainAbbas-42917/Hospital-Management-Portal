@@ -13,6 +13,31 @@ async function searchPublicDoctors() {
   }
 }
 
+async function bookPublicAppointment(doctorId) {
+  const query = new URLSearchParams({ doctor_id: doctorId });
+
+  if (!getToken()) {
+    window.location.href = "/register?" + query.toString();
+    return;
+  }
+
+  if (getRole() !== "patient") {
+    window.location.href = "/register?" + query.toString();
+    return;
+  }
+
+  try {
+    await apiFetch("/patients/me");
+    window.location.href = "/patient/dashboard?" + query.toString();
+  } catch (err) {
+    if (err.message === "Patient profile not found") {
+      window.location.href = "/patient/profile?" + query.toString();
+      return;
+    }
+    window.location.href = "/login?" + query.toString();
+  }
+}
+
 function renderHomeDoctors(doctors) {
   const grid = document.getElementById("homeDoctorsGrid");
   if (!doctors.length) {
@@ -29,7 +54,7 @@ function renderHomeDoctors(doctors) {
         <span>Rs. ${doc.consultation_fee}</span>
       </div>
       <p class="bio">${doc.bio ? doc.bio.substring(0, 90) + "..." : "No bio provided."}</p>
-      <a href="/login" class="btn btn-primary btn-block">Login to Book</a>
+      <button type="button" class="btn btn-primary btn-block" onclick="bookPublicAppointment(${doc.id})">Book Appointment</button>
     </div>
   `).join("");
 }

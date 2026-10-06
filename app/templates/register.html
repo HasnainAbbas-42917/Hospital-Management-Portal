@@ -47,6 +47,31 @@
               <button type="button" class="password-toggle" onclick="togglePassword('password', this)">&#128065;</button>
             </div>
           </div>
+          <div class="patient-profile-fields" id="patientProfileFields">
+            <div class="field">
+              <label for="phone">Phone number</label>
+              <input type="tel" id="phone" placeholder="e.g. 0300 1234567">
+            </div>
+            <div class="profile-grid">
+              <div class="field">
+                <label for="dob">Date of birth</label>
+                <input type="date" id="dob">
+              </div>
+              <div class="field">
+                <label for="gender">Gender</label>
+                <select id="gender">
+                  <option value="">Select</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label for="address">Address</label>
+              <textarea id="address" rows="2" placeholder="Street, area, city"></textarea>
+            </div>
+          </div>
           <button type="submit" class="btn btn-primary btn-block">Create account</button>
         </form>
 
@@ -71,12 +96,24 @@
     }
 
     let selectedRole = "patient";
+    const profileFields = document.getElementById("patientProfileFields");
+    const doctorId = new URLSearchParams(window.location.search).get("doctor_id");
+    if (doctorId) {
+      document.querySelectorAll(".role-tab").forEach((tab) => {
+        if (tab.dataset.role !== "patient") tab.hidden = true;
+      });
+    }
+    document.querySelector('a[href="/login"]').href = doctorId
+      ? "/login?doctor_id=" + encodeURIComponent(doctorId)
+      : "/login";
+
     document.querySelectorAll(".role-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".role-tab").forEach((t) => t.classList.remove("active"));
         tab.classList.add("active");
         selectedRole = tab.dataset.role;
         document.getElementById("roleBannerText").textContent = tab.dataset.role.charAt(0).toUpperCase() + tab.dataset.role.slice(1) + " Registration";
+        profileFields.hidden = selectedRole !== "patient";
       });
     });
 
@@ -91,6 +128,12 @@
         password: document.getElementById("password").value,
         role: selectedRole,
       };
+      if (selectedRole === "patient") {
+        payload.phone = document.getElementById("phone").value || null;
+        payload.dob = document.getElementById("dob").value || null;
+        payload.gender = document.getElementById("gender").value || null;
+        payload.address = document.getElementById("address").value || null;
+      }
 
       try {
         const data = await apiFetch("/auth/register", {
@@ -105,7 +148,9 @@
           receptionist: "/receptionist/dashboard",
           patient: "/patient/dashboard",
         };
-        window.location.href = destinations[data.role] || "/login";
+        window.location.href = data.role === "patient" && doctorId
+          ? "/patient/dashboard?doctor_id=" + encodeURIComponent(doctorId)
+          : destinations[data.role] || "/login";
       } catch (err) {
         showAlert(alertBox, err.message);
       }

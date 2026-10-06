@@ -31,7 +31,11 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 def require_role(*allowed_roles: str):
     def role_checker(current_user: models.User = Depends(get_current_user)) -> models.User:
-        if current_user.role not in allowed_roles:
+        current_role = getattr(current_user.role, "value", current_user.role)
+        normalized_allowed_roles = {
+            str(getattr(role, "value", role)).casefold() for role in allowed_roles
+        }
+        if str(current_role).casefold() not in normalized_allowed_roles:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="You don't have permission to access this resource",

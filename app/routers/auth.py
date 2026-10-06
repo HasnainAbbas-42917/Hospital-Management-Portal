@@ -28,7 +28,14 @@ def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
     db.flush()
 
     if user_in.role == models.RoleEnum.patient:
-        db.add(models.Patient(user_id=user.id, name=user_in.name))
+        db.add(models.Patient(
+            user_id=user.id,
+            name=user_in.name,
+            phone=user_in.phone,
+            dob=user_in.dob,
+            gender=user_in.gender,
+            address=user_in.address,
+        ))
     elif user_in.role == models.RoleEnum.doctor:
         db.add(models.Doctor(user_id=user.id, name=user_in.name))
     elif user_in.role == models.RoleEnum.admin:
@@ -36,7 +43,7 @@ def register(user_in: schemas.UserCreate, db: Session = Depends(get_db)):
 
     db.commit()
 
-    token = security.create_access_token({"sub": str(user.id), "role": user.role})
+    token = security.create_access_token({"sub": str(user.id), "role": user.role.value})
     return schemas.Token(access_token=token, role=user.role)
 
 
@@ -46,5 +53,5 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     if not user or not security.verify_password(form_data.password, user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect email or password")
 
-    token = security.create_access_token({"sub": str(user.id), "role": user.role})
+    token = security.create_access_token({"sub": str(user.id), "role": user.role.value})
     return schemas.Token(access_token=token, role=user.role)

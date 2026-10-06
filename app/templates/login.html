@@ -67,6 +67,11 @@
       btn.innerHTML = isHidden ? "&#128584;" : "&#128065;";
     }
 
+    const doctorId = new URLSearchParams(window.location.search).get("doctor_id");
+    document.querySelector('a[href="/register"]').href = doctorId
+      ? "/register?doctor_id=" + encodeURIComponent(doctorId)
+      : "/register";
+
     document.querySelectorAll(".role-tab").forEach((tab) => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".role-tab").forEach((t) => t.classList.remove("active"));
@@ -97,6 +102,19 @@
           receptionist: "/receptionist/dashboard",
           patient: "/patient/dashboard",
         };
+        if (data.role === "patient" && doctorId) {
+          try {
+            await apiFetch("/patients/me");
+            window.location.href = "/patient/dashboard?doctor_id=" + encodeURIComponent(doctorId);
+          } catch (err) {
+            if (err.message === "Patient profile not found") {
+              window.location.href = "/patient/profile?doctor_id=" + encodeURIComponent(doctorId);
+            } else {
+              showAlert(alertBox, err.message);
+            }
+          }
+          return;
+        }
         window.location.href = destinations[data.role] || "/login";
       } catch (err) {
         showAlert(alertBox, err.message);

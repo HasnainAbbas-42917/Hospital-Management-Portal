@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import Optional, List
 from app.database import get_db
-from app.deps import require_role
+from app.deps import get_current_user, require_role
 from app import models, schemas
 from app.services.appointment_logic import validate_and_create_appointment
 
@@ -64,12 +64,33 @@ def search_doctors(
     return query.all()
 
 
-@router.post("/appointments", response_model=schemas.AppointmentOut)
-def request_appointment(
-    appt_in: schemas.AppointmentCreate,
+@router.post("/me", response_model=schemas.PatientOut)
+def create_my_profile(
+    profile_in: schemas.PatientProfileCreate,
     current_user: models.User = Depends(require_role("patient")),
     db: Session = Depends(get_db),
 ):
+    existing_profile = db.query(models.Patient).filter(
+        models.Patient.user_id == current_user.id
+    ).first()
+    if existing_profile:
+        raise HTTPException(status_code=409, detail="Patient profile already exists")
+
+    patient = models.Patient(user_id=current_user.id, **profile_in.model_dump())
+    db.add(patient)
+    db.commit()
+    db.refresh(patient)
+    return patient
+
+
+
+@router.post("/appointments", response_model=schemas.AppointmentOut)
+def request_appointment(
+    appt_in: schemas.AppointmentCreate,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # The linked patient profile is the booking authorization boundary.
     patient = get_patient_profile(current_user, db)
     appointment = validate_and_create_appointment(
         db, patient.id, appt_in.doctor_id, appt_in.appointment_date,

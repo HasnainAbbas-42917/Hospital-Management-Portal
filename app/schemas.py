@@ -10,6 +10,10 @@ class UserCreate(BaseModel):
     password: str
     role: RoleEnum
     name: str
+    phone: Optional[str] = None
+    dob: Optional[date] = None
+    gender: Optional[str] = None
+    address: Optional[str] = None
 
 
 class UserLogin(BaseModel):
@@ -47,6 +51,13 @@ class PatientOut(BaseModel):
 
 class PatientProfileUpdate(BaseModel):
     name: Optional[str] = None
+    phone: Optional[str] = None
+    dob: Optional[date] = None
+    gender: Optional[str] = None
+    address: Optional[str] = None
+
+class PatientProfileCreate(BaseModel):
+    name: str
     phone: Optional[str] = None
     dob: Optional[date] = None
     gender: Optional[str] = None
