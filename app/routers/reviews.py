@@ -55,6 +55,37 @@ def submit_review(
     return review
 
 
+@router.get("/public")
+def get_public_reviews(db: Session = Depends(get_db)):
+    reviews = (
+        db.query(
+            models.Review.id,
+            models.Review.rating,
+            models.Review.comment,
+            models.Review.created_at,
+            models.Patient.name.label("patient_name"),
+            models.Doctor.name.label("doctor_name"),
+            models.Doctor.specialization.label("doctor_specialization"),
+        )
+        .outerjoin(models.Patient, models.Patient.id == models.Review.patient_id)
+        .outerjoin(models.Doctor, models.Doctor.id == models.Review.doctor_id)
+        .order_by(models.Review.created_at.desc(), models.Review.id.desc())
+        .all()
+    )
+    return [
+        {
+            "id": review.id,
+            "rating": review.rating,
+            "comment": review.comment,
+            "created_at": review.created_at,
+            "patient_name": review.patient_name or "Unknown patient",
+            "doctor_name": review.doctor_name or "Unknown doctor",
+            "doctor_specialization": review.doctor_specialization or "General",
+        }
+        for review in reviews
+    ]
+
+
 @router.get("/doctor/{doctor_id}", response_model=List[schemas.ReviewOut])
 def get_doctor_reviews(doctor_id: int, db: Session = Depends(get_db)):
     # Public: anyone (even not logged in) can view a doctor's reviews before booking

@@ -64,6 +64,65 @@ function escapeHTML(value) {
   return element.innerHTML;
 }
 
+let publicReviews = [];
+let visiblePublicReviewCount = 5;
+
+async function loadPublicReviews() {
+  const container = document.getElementById("publicReviews");
+  try {
+    publicReviews = await apiFetch("/reviews/public");
+    renderPublicReviews();
+  } catch (err) {
+    container.innerHTML = `<p class="statistics-error">Patient reviews are temporarily unavailable.</p>`;
+  }
+}
+
+function renderPublicReviews() {
+  const container = document.getElementById("publicReviews");
+  if (!publicReviews.length) {
+    container.innerHTML = `<p class="text-muted">No patient reviews have been shared yet.</p>`;
+    return;
+  }
+
+  const averageRating = publicReviews.reduce((sum, review) => sum + review.rating, 0) / publicReviews.length;
+  const displayedReviews = publicReviews.slice(0, visiblePublicReviewCount);
+  container.innerHTML = `
+    <div class="review-summary">
+      <div class="review-summary-item">
+        <div class="review-summary-number">${averageRating.toFixed(1)}</div>
+        <div class="review-summary-label">Average patient rating</div>
+      </div>
+      <div class="review-summary-item">
+        <div class="review-summary-number">${publicReviews.length.toLocaleString()}</div>
+        <div class="review-summary-label">Patient reviews</div>
+      </div>
+    </div>
+    <div class="public-review-list">
+      ${displayedReviews.map((review) => `
+        <article class="public-review-item">
+          <div class="public-review-topline">
+            <div class="review-stars" role="img" aria-label="${review.rating} out of 5 stars">${"★".repeat(review.rating)}${"☆".repeat(5 - review.rating)}</div>
+            <time class="public-review-date" datetime="${escapeHTML(review.created_at || "")}">${escapeHTML(formatDate((review.created_at || "").slice(0, 10)))}</time>
+          </div>
+          <p class="public-review-comment">${review.comment ? `“${escapeHTML(review.comment)}”` : "No written comment was provided."}</p>
+          <div class="public-review-attribution">
+            <span><strong>Patient:</strong> ${escapeHTML(review.patient_name)}</span>
+            <span><strong>Doctor:</strong> ${escapeHTML(review.doctor_name)} <span class="review-specialization">${escapeHTML(review.doctor_specialization)}</span></span>
+          </div>
+        </article>
+      `).join("")}
+    </div>
+    ${visiblePublicReviewCount < publicReviews.length
+      ? `<div class="reviews-more-wrap"><button type="button" class="btn btn-secondary" onclick="showMorePublicReviews()">Show more reviews</button></div>`
+      : ""}
+  `;
+}
+
+function showMorePublicReviews() {
+  visiblePublicReviewCount += 5;
+  renderPublicReviews();
+}
+
 async function bookPublicAppointment(doctorId) {
   const query = new URLSearchParams({ doctor_id: doctorId });
 
@@ -111,4 +170,5 @@ function renderHomeDoctors(doctors) {
 }
 
 loadPublicStatistics();
+loadPublicReviews();
 searchPublicDoctors();

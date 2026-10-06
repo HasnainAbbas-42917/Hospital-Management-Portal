@@ -7,7 +7,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✚</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/css/style.css?v=20261006">
+  <link rel="stylesheet" href="/static/css/style.css?v=20261006-reviews">
 </head>
 <body class="bg-auth">
 
@@ -19,6 +19,7 @@
         <a href="#about">About Us</a>
         <a href="#services">Services</a>
         <a href="#hospital-statistics">Statistics</a>
+        <a href="#patient-reviews">Patient reviews</a>
         <a href="#doctors">Our Doctors</a>
       </div>
       <a href="/login" class="btn btn-primary public-nav-login">Login</a>
@@ -67,6 +68,20 @@
     </div>
   </section>
 
+  <section class="public-section patient-reviews-section" id="patient-reviews">
+    <div class="reviews-heading">
+      <div>
+        <span class="statistics-eyebrow">Patient voices</span>
+        <h2>Experiences from our patients</h2>
+        <p class="public-section-lead">Feedback shared after completed appointments.</p>
+      </div>
+      <span class="reviews-source">Verified appointment reviews</span>
+    </div>
+    <div id="publicReviews" aria-live="polite">
+      <p class="text-muted">Loading patient reviews...</p>
+    </div>
+  </section>
+
   <section class="public-section public-section-alt" id="services">
     <h2>Our services</h2>
     <p class="public-section-lead">A wide range of specialities under one roof.</p>
@@ -102,6 +117,7 @@
         <a href="#about">About Us</a>
         <a href="#services">Services</a>
         <a href="#hospital-statistics">Hospital statistics</a>
+        <a href="#patient-reviews">Patient reviews</a>
         <a href="#doctors">Our Doctors</a>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
@@ -119,6 +135,6 @@
   </footer>
 
   <script src="/static/js/api.js"></script>
-  <script src="/static/js/home.js"></script>
+  <script src="/static/js/home.js?v=20261006-reviews"></script>
 </body>
 </html>
