@@ -64,6 +64,23 @@ function escapeHTML(value) {
   return element.innerHTML;
 }
 
+function togglePublicNav(button) {
+  const links = document.getElementById("publicNavLinks");
+  const isOpen = links.classList.toggle("show");
+  button.setAttribute("aria-expanded", String(isOpen));
+  button.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+}
+
+document.querySelectorAll("#publicNavLinks a").forEach((link) => {
+  link.addEventListener("click", () => {
+    const links = document.getElementById("publicNavLinks");
+    const toggle = document.querySelector(".public-nav-toggle");
+    links.classList.remove("show");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open navigation menu");
+  });
+});
+
 let publicReviews = [];
 let visiblePublicReviewCount = 5;
 

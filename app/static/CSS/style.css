@@ -730,10 +730,22 @@ body.bg-auth {
 /* ============================================================
    PUBLIC HOMEPAGE
    ============================================================ */
+body.homepage-page {
+  --role-primary: #0E5D56;
+  --role-dark: #073F3A;
+  background-color: #EFF6F4;
+  background-image:
+    linear-gradient(0deg, transparent 47%, rgba(14, 93, 86, 0.028) 47% 53%, transparent 53%),
+    linear-gradient(90deg, transparent 47%, rgba(14, 93, 86, 0.028) 47% 53%, transparent 53%),
+    linear-gradient(132deg, #F5F8F7 0%, #EAF4F1 48%, #EEF3F8 100%);
+  background-size: 56px 56px, 56px 56px, cover;
+  background-attachment: fixed;
+}
+
 .public-nav {
   position: sticky; top: 0; z-index: 100;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(6px);
+  background: rgba(250,250,248,0.96);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
 }
 .public-nav-inner {
@@ -742,25 +754,49 @@ body.bg-auth {
   padding: 14px 24px;
 }
 .public-brand {
+  display: inline-flex; align-items: center; gap: 9px; flex: 0 0 auto;
   font-family: var(--font-display); font-weight: 700; font-size: 1.2rem;
   color: var(--color-primary-dark); margin-right: auto;
+  white-space: nowrap;
 }
-.public-nav-links { display: flex; gap: 22px; }
-.public-nav-links a { color: var(--color-ink); font-weight: 500; font-size: 0.92rem; }
-.public-nav-links a:hover { color: var(--color-primary); text-decoration: none; }
+.public-brand:hover { text-decoration: none; }
+.public-brand-mark { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: var(--color-primary); color: #fff; font-family: var(--font-ui); font-size: 1rem; }
+.public-nav-links { display: flex; align-items: center; gap: 5px; }
+.public-nav-links a { display: inline-flex; align-items: center; gap: 7px; padding: 9px 10px; border-radius: 6px; color: var(--color-ink); font-weight: 500; font-size: 0.88rem; transition: background-color 140ms ease, color 140ms ease; }
+.public-nav-links a:hover, .public-nav-links a:focus-visible { background: var(--color-primary-soft); color: var(--color-primary-dark); text-decoration: none; }
+.public-nav-links a:active { background: #D3EAE3; }
+.nav-link-icon { display: inline-grid; place-items: center; width: 23px; height: 23px; border-radius: 6px; background: #EAF3F0; color: var(--color-primary); font-size: 0.95rem; font-weight: 700; line-height: 1; }
 .public-nav-login { padding: 9px 20px; }
-.public-nav-toggle { display: none; background:none; border:none; font-size:1.3rem; cursor:pointer; }
+.public-nav-toggle { display: none; }
 
-@media (max-width: 760px) {
+@media (max-width: 980px) {
+  .public-nav-inner { position: relative; gap: 8px; padding: 10px 14px; }
+  .public-brand { gap: 7px; font-size: 1.08rem; }
+  .public-brand-mark { width: 28px; height: 28px; }
   .public-nav-links {
-    display: none; position: absolute; top: 60px; left: 0; right: 0;
-    background: var(--color-surface); flex-direction: column; gap: 0;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1); padding: 8px 0;
+    display: none; position: absolute; top: calc(100% + 8px); left: 12px; right: 12px;
+    flex-direction: column; align-items: stretch; gap: 4px; padding: 10px;
+    border: 1px solid #BFD8CF; border-radius: 10px;
+    background: linear-gradient(145deg, #E6F3EF 0%, #DCEDE8 52%, #E8F0F4 100%);
+    box-shadow: 0 14px 34px rgba(10, 63, 58, 0.18), 0 3px 8px rgba(27, 36, 48, 0.08);
   }
   .public-nav-links.show { display: flex; }
-  .public-nav-links a { padding: 12px 24px; }
-  .public-nav-toggle { display: block; }
-  .public-nav-login { padding: 8px 14px; font-size: 0.85rem; }
+  .public-nav-links a { min-height: 44px; padding: 8px 10px; border-radius: 7px; font-size: 0.93rem; }
+  .public-nav-links a:hover, .public-nav-links a:focus-visible { background: rgba(255,255,255,0.72); }
+  .public-nav-links a:focus-visible, .public-nav-toggle:focus-visible, .public-nav-login:focus-visible { outline: 3px solid rgba(226, 162, 59, 0.75); outline-offset: 2px; }
+  .nav-link-icon { width: 28px; height: 28px; border: 1px solid rgba(14, 93, 86, 0.12); border-radius: 7px; background: rgba(255,255,255,0.66); font-size: 1rem; }
+  .public-nav-toggle { display: flex; flex: 0 0 40px; width: 40px; height: 40px; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 0; border: 1px solid #C9DCD5; border-radius: 8px; background: #F4F8F6; color: var(--color-primary-dark); cursor: pointer; transition: background-color 140ms ease, border-color 140ms ease; }
+  .public-nav-toggle:hover { background: var(--color-primary-soft); border-color: #A9C9BE; }
+  .public-nav-toggle span { display: block; width: 17px; height: 2px; border-radius: 2px; background: currentColor; transition: transform 140ms ease, opacity 140ms ease; }
+  .public-nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+  .public-nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .public-nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-7px) rotate(-45deg); }
+  .public-nav-login { margin-left: auto; padding: 8px 12px; font-size: 0.85rem; }
+}
+@media (max-width: 360px) {
+  .public-nav-inner { padding-right: 12px; padding-left: 12px; }
+  .public-brand { font-size: 1rem; }
+  .public-nav-login { padding-right: 9px; padding-left: 9px; }
 }
 
 .public-hero {
@@ -816,7 +852,7 @@ body.bg-auth {
 .status-cancelled strong { color: var(--color-danger); }
 .statistics-note { margin: 22px 0 0; font-size: 0.78rem; }
 .statistics-error { padding: 16px 0; color: var(--color-danger); }
-.patient-reviews-section { background: var(--color-paper); }
+.patient-reviews-section { background: transparent; }
 .reviews-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
 .reviews-heading .public-section-lead { margin-bottom: 0; }
 .reviews-source { flex: 0 0 auto; color: var(--color-ink-soft); font-size: 0.82rem; }
