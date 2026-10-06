@@ -7,7 +7,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✚</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/css/style.css?v=20261006-text-navbar">
+  <link rel="stylesheet" href="/static/css/style.css?v=20261006-home-refresh-final">
 </head>
 <body class="bg-auth homepage-page">
 
@@ -104,13 +104,13 @@
       <input type="text" id="homeSpecialization" placeholder="e.g. Cardiology, Dermatology...">
       <button class="btn btn-primary" onclick="searchPublicDoctors()">Search</button>
     </div>
-    <div id="homeDoctorsGrid" class="doctor-grid mt-24"></div>
+    <div id="homeDoctorsGrid" class="doctor-grid mt-24 public-doctors-grid"></div>
   </section>
 
   <footer class="public-footer">
     <div class="public-footer-inner">
       <div class="public-footer-col">
-        <div class="public-brand" style="color:#fff;">✚ Hospital Portal</div>
+        <div class="footer-brand"><span aria-hidden="true">✚</span> Hospital Portal</div>
         <p>Quality healthcare, simply booked. Serving patients with trusted, verified doctors across every major specialization.</p>
       </div>
       <div class="public-footer-col">
@@ -128,7 +128,7 @@
         <h4>Contact & Location</h4>
         <p>123 Main Boulevard, Islamabad, Pakistan</p>
         <p>+92 300 1234567</p>
-        <p>info@hospitalportal.example</p>
+        <a href="mailto:info@hospitalportal.com">info@hospitalportal.com</a>
       </div>
     </div>
     <div class="public-footer-bottom">
@@ -137,6 +137,6 @@
   </footer>
 
   <script src="/static/js/api.js"></script>
-  <script src="/static/js/home.js?v=20261006-mobile-nav"></script>
+  <script src="/static/js/home.js?v=20261006-home-refresh-mobile"></script>
 </body>
 </html>

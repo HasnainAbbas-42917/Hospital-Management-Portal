@@ -1,3 +1,6 @@
+let publicDoctors = [];
+let visiblePublicDoctorCount = 5;
+
 async function searchPublicDoctors() {
   const specialization = document.getElementById("homeSpecialization").value.trim();
   const params = new URLSearchParams();
@@ -6,8 +9,9 @@ async function searchPublicDoctors() {
   const grid = document.getElementById("homeDoctorsGrid");
   grid.innerHTML = "<p class='text-muted'>Loading...</p>";
   try {
-    const doctors = await apiFetch("/patients/doctors/search?" + params.toString());
-    renderHomeDoctors(doctors);
+    publicDoctors = await apiFetch("/patients/doctors/search?" + params.toString());
+    visiblePublicDoctorCount = 5;
+    renderHomeDoctors();
   } catch (err) {
     grid.innerHTML = `<p class="text-muted">Could not load doctors right now.</p>`;
   }
@@ -82,7 +86,7 @@ document.querySelectorAll("#publicNavLinks a").forEach((link) => {
 });
 
 let publicReviews = [];
-let visiblePublicReviewCount = 5;
+let visiblePublicReviewCount = 3;
 
 async function loadPublicReviews() {
   const container = document.getElementById("publicReviews");
@@ -130,13 +134,13 @@ function renderPublicReviews() {
       `).join("")}
     </div>
     ${visiblePublicReviewCount < publicReviews.length
-      ? `<div class="reviews-more-wrap"><button type="button" class="btn btn-secondary" onclick="showMorePublicReviews()">Show more reviews</button></div>`
+      ? `<div class="reviews-more-wrap"><button type="button" class="btn btn-secondary reveal-button" onclick="showMorePublicReviews()">Show More Reviews</button></div>`
       : ""}
   `;
 }
 
 function showMorePublicReviews() {
-  visiblePublicReviewCount += 5;
+  visiblePublicReviewCount += 3;
   renderPublicReviews();
 }
 
@@ -165,14 +169,16 @@ async function bookPublicAppointment(doctorId) {
   }
 }
 
-function renderHomeDoctors(doctors) {
+function renderHomeDoctors() {
   const grid = document.getElementById("homeDoctorsGrid");
-  if (!doctors.length) {
-    grid.innerHTML = `<div class="empty-state"><h3>No doctors found</h3><p>Try a different specialization, or check back soon.</p></div>`;
+  if (!publicDoctors.length) {
+    grid.innerHTML = `<div class="empty-state"><h3>No doctors found</h3><p>Try a different specialization or keyword.</p></div>`;
     return;
   }
-  grid.innerHTML = doctors.map((doc) => `
-    <div class="doctor-card">
+
+  const shownDoctors = publicDoctors.slice(0, visiblePublicDoctorCount);
+  grid.innerHTML = shownDoctors.map((doc) => `
+    <article class="doctor-card">
       <div class="avatar-circle">${doc.name.charAt(0).toUpperCase()}</div>
       <h3>${doc.name}</h3>
       <div class="specialization">${doc.specialization || "General"}</div>
@@ -182,8 +188,15 @@ function renderHomeDoctors(doctors) {
       </div>
       <p class="bio">${doc.bio ? doc.bio.substring(0, 90) + "..." : "No bio provided."}</p>
       <button type="button" class="btn btn-primary btn-block" onclick="bookPublicAppointment(${doc.id})">Book Appointment</button>
-    </div>
-  `).join("");
+    </article>
+  `).join("") + (visiblePublicDoctorCount < publicDoctors.length
+    ? `<div class="doctors-more-wrap"><button type="button" class="btn btn-secondary reveal-button" onclick="showMorePublicDoctors()">Show More Doctors</button></div>`
+    : "");
+}
+
+function showMorePublicDoctors() {
+  visiblePublicDoctorCount += 5;
+  renderHomeDoctors();
 }
 
 loadPublicStatistics();
