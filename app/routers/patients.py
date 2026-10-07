@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from typing import Optional, List
 from app.database import get_db
 from app.deps import get_current_user, require_role
@@ -47,13 +47,18 @@ def update_my_profile(
     return patient
 
 
-@router.get("/doctors/search", response_model=List[schemas.DoctorOut])
+@router.get("/doctors/search", response_model=List[schemas.PublicDoctorOut])
 def search_doctors(
     specialization: Optional[str] = None,
     keyword: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
-    query = db.query(models.Doctor).filter(models.Doctor.status == "approved")
+    query = (
+        db.query(models.Doctor)
+        .options(joinedload(models.Doctor.availability))
+        .filter(models.Doctor.status == "approved")
+        .order_by(models.Doctor.name)
+    )
     if specialization:
         query = query.filter(models.Doctor.specialization.ilike(f"%{specialization}%"))
     if keyword:
@@ -61,7 +66,34 @@ def search_doctors(
             (models.Doctor.name.ilike(f"%{keyword}%")) |
             (models.Doctor.bio.ilike(f"%{keyword}%"))
         )
-    return query.all()
+
+    doctors = query.all()
+    return [
+        {
+            "id": doctor.id,
+            "name": doctor.name,
+            "specialization": doctor.specialization,
+            "experience_years": doctor.experience_years,
+            "bio": doctor.bio,
+            "consultation_fee": float(doctor.consultation_fee or 0),
+            "status": doctor.status,
+            "availability": "available" if doctor.availability else "no schedule set",
+            "schedule": [
+                {
+                    "id": slot.id,
+                    "day_of_week": slot.day_of_week,
+                    "start_time": slot.start_time.isoformat(),
+                    "end_time": slot.end_time.isoformat(),
+                    "slot_duration_minutes": slot.slot_duration_minutes,
+                }
+                for slot in sorted(
+                    doctor.availability,
+                    key=lambda item: (item.day_of_week, item.start_time),
+                )
+            ],
+        }
+        for doctor in doctors
+    ]
 
 
 @router.get("/public/statistics")

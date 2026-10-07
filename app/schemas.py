@@ -39,6 +39,28 @@ class DoctorOut(BaseModel):
     status: str
 
 
+class PublicDoctorScheduleOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    day_of_week: int
+    start_time: time
+    end_time: time
+    slot_duration_minutes: int
+
+
+class PublicDoctorOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    id: int
+    name: str
+    specialization: Optional[str]
+    experience_years: int
+    bio: Optional[str]
+    consultation_fee: float
+    status: str
+    availability: str
+    schedule: List[PublicDoctorScheduleOut]
+
+
 # ---------- Patient ----------
 class PatientOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
