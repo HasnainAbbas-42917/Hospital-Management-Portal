@@ -226,6 +226,13 @@ function showMorePublicDoctors() {
   renderHomeDoctors();
 }
 
+function showMoreServices() {
+  const hiddenServices = document.querySelectorAll(".service-card-hidden");
+  hiddenServices.forEach((service) => service.classList.add("is-visible"));
+  const moreWrap = document.querySelector(".services-more-wrap");
+  if (moreWrap) moreWrap.classList.add("is-hidden");
+}
+
 loadPublicStatistics();
 loadPublicReviews();
 searchPublicDoctors();
