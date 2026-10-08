@@ -493,40 +493,74 @@ table.simple-table td { padding: 12px; border-bottom: 1px solid var(--color-bord
   display: none;
   position: absolute;
   top: 46px; right: 0;
-  width: 320px;
-  max-height: 420px;
-  overflow-y: auto;
+  width: min(320px, calc(100vw - 24px));
+  max-height: calc(100vh - 96px);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   box-shadow: 0 8px 24px rgba(27,36,48,0.14);
   z-index: 200;
+  flex-direction: column;
+  overflow: hidden;
 }
-.notif-panel.show { display: block; }
+.notif-panel.show { display: flex; }
 .notif-panel-header {
   display: flex; align-items: center; justify-content: space-between;
   padding: 12px 14px;
   border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
 }
 .notif-panel-header h4 { margin: 0; font-size: 0.95rem; font-family: var(--font-ui); font-weight: 700; }
 .notif-mark-all { background: none; border: none; color: var(--color-primary); font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+.notif-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .notif-item {
+  width: 100%;
+  min-width: 0;
   padding: 12px 14px;
   border-bottom: 1px solid var(--color-border);
   font-size: 0.85rem;
   cursor: pointer;
+  box-sizing: border-box;
 }
 .notif-item:last-child { border-bottom: none; }
 .notif-item.unread { background: var(--color-primary-soft); }
-.notif-item .notif-message { color: var(--color-ink); line-height: 1.4; }
+.notif-item .notif-message {
+  min-width: 0;
+  color: var(--color-ink);
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .notif-item .notif-time { color: var(--color-ink-soft); font-size: 0.72rem; margin-top: 4px; }
 .notif-empty { padding: 24px 14px; text-align: center; color: var(--color-ink-soft); font-size: 0.85rem; }
 
 /* Bell sits in the sidebar on desktop, in the mobile topbar on small screens */
 .sidebar .notif-bell-wrap { margin-bottom: 20px; }
+.sidebar .notif-panel {
+  position: fixed;
+  top: 96px;
+  right: 16px;
+  left: auto;
+  width: min(320px, calc(100vw - 32px));
+}
 .topbar-mobile .notif-bell-wrap { margin-right: 8px; }
 @media (max-width: 860px) {
   .sidebar .notif-bell-wrap { display: none; }
+  .topbar-mobile .notif-panel {
+    position: fixed;
+    top: 62px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-width: none;
+    max-height: calc(100vh - 82px);
+  }
 }
 @media (min-width: 861px) {
   .topbar-mobile { display: none !important; }

@@ -8,7 +8,7 @@ async function initNotifications() {
   document.querySelectorAll(".notif-bell").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      toggleNotifPanel();
+      toggleNotifPanel(btn);
     });
   });
 
@@ -36,13 +36,16 @@ async function refreshNotifBadge() {
   }
 }
 
-function toggleNotifPanel() {
-  const panel = document.querySelector(".notif-panel");
+function toggleNotifPanel(button) {
+  const wrap = button.closest(".notif-bell-wrap");
+  const panel = wrap ? wrap.querySelector(".notif-panel") : null;
   if (!panel) return;
+
   if (panel.classList.contains("show")) {
     panel.classList.remove("show");
   } else {
-    loadNotifPanel();
+    closeAllNotifPanels();
+    loadNotifPanel(panel);
     panel.classList.add("show");
   }
 }
@@ -51,8 +54,7 @@ function closeAllNotifPanels() {
   document.querySelectorAll(".notif-panel").forEach((p) => p.classList.remove("show"));
 }
 
-async function loadNotifPanel() {
-  const panel = document.querySelector(".notif-panel");
+async function loadNotifPanel(panel) {
   const list = panel.querySelector(".notif-list");
   list.innerHTML = `<div class="notif-empty">Loading...</div>`;
 
@@ -78,7 +80,9 @@ async function markNotifRead(id, el) {
     try {
       await apiFetch(`/notifications/${id}/read`, { method: "PATCH" });
       el.classList.remove("unread");
-      refreshNotifBadge();
+      await refreshNotifBadge();
+      const activePanel = el.closest(".notif-panel");
+      if (activePanel) await loadNotifPanel(activePanel);
     } catch (err) { /* ignore */ }
   }
 }
@@ -86,8 +90,9 @@ async function markNotifRead(id, el) {
 async function markAllNotifRead() {
   try {
     await apiFetch("/notifications/read-all", { method: "PATCH" });
-    loadNotifPanel();
-    refreshNotifBadge();
+    const activePanel = document.querySelector(".notif-panel.show");
+    if (activePanel) await loadNotifPanel(activePanel);
+    await refreshNotifBadge();
   } catch (err) { /* ignore */ }
 }
 
