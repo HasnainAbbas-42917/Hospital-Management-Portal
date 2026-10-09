@@ -1096,3 +1096,28 @@ body.homepage-page {
   color: var(--color-primary);
   text-decoration: none;
 }
+
+/* ---------- Auth form: vertical layout under the password field ---------- */
+.auth-form-box .form-meta-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: -4px 0 18px;
+}
+.auth-form-box .form-meta-row a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+.auth-form-box .btn-block {
+  margin-top: 4px;
+  padding: 13px 20px;
+}
+.auth-switch {
+  text-align: center;
+  margin: 22px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
+.auth-switch a { font-weight: 600; }

@@ -3,12 +3,16 @@
 
 {% block content %}
   <h1>Patients</h1>
-  <p class="text-muted">All registered patients and their contact details.</p>
+  <p class="text-muted">All registered patients, their login email, and contact details.</p>
 
-  <div class="table-scroll mt-24">
+  <div class="search-bar" style="max-width:420px; margin-top:16px;">
+    <input type="text" id="patientSearch" placeholder="Search by name, email, or phone...">
+  </div>
+
+  <div class="table-scroll">
     <table class="simple-table">
       <thead>
-        <tr><th>ID</th><th>Name</th><th>Phone</th><th>Gender</th><th>Date of birth</th><th>Address</th></tr>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Gender</th><th>Date of birth</th><th>Address</th><th>Action</th></tr>
       </thead>
       <tbody id="patientsBody"></tbody>
     </table>

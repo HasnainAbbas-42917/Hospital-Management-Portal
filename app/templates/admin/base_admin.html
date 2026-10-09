@@ -43,11 +43,31 @@
             <footer class="portal-footer"><strong>Hospital Portal</strong> — Administration</footer>
     </main>
   </div>
+   
+    <div class="modal-overlay" id="resetPasswordModal">
+    <div class="modal-box">
+      <div class="flex-between">
+        <h3 id="resetPasswordTitle">Reset password</h3>
+        <button class="modal-close" onclick="closeResetPassword()">&times;</button>
+      </div>
+      <div id="resetPasswordAlert" class="alert"></div>
+      <form id="resetPasswordForm">
+        <div class="field">
+          <label for="resetNewPassword">New temporary password</label>
+          <input type="text" id="resetNewPassword" required minlength="6" placeholder="At least 6 characters">
+        </div>
+        <button type="button" class="btn btn-secondary btn-block" style="margin-bottom:10px;" onclick="generateTempPassword()">Generate random password</button>
+        <button type="submit" class="btn btn-primary btn-block">Save new password</button>
+      </form>
+      <p class="text-muted" style="margin-top:12px;">Share the new password with the user securely. Anyone already signed in stays signed in until their session expires.</p>
+    </div>
+  </div>
 
-  <script src="/static/js/api.js"></script>
+    <script src="/static/js/api.js"></script>
   <script>
     if (!requireAuth("admin")) { /* redirected already */ }
   </script>
+  <script src="/static/js/admin_password.js"></script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

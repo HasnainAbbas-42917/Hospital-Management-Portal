@@ -79,6 +79,7 @@ async function loadActiveDoctors() {
         <div class="avatar-circle">${doc.name.charAt(0).toUpperCase()}</div>
         <h3>${doc.name}</h3>
         <div class="specialization">${doc.specialization || "Not set"}</div>
+                <div class="appt-meta">${doc.email || ""}</div>
         <div class="meta-row">
           <span>${doc.experience_years} yrs</span>
           <span>Rs. ${doc.consultation_fee}</span>
@@ -88,6 +89,7 @@ async function loadActiveDoctors() {
         <div class="appt-actions mt-24" style="flex-wrap:wrap;">
           <button class="btn btn-secondary" onclick="openScheduleModal(${doc.id}, '${doc.name.replace(/'/g, "")}')">View schedule</button>
           <button class="btn btn-secondary" onclick="openFeeModal(${doc.id}, ${doc.consultation_fee})">Set fee</button>
+          <button class="btn btn-secondary" onclick="openResetPassword('doctors', ${doc.id}, '${doc.name.replace(/'/g, "")}')">Reset password</button>
           ${doc.is_active
             ? `<button class="btn btn-danger" onclick="deactivateDoctor(${doc.id})">Deactivate</button>`
             : `<button class="btn btn-primary" onclick="reactivateDoctor(${doc.id})">Reactivate</button>`

@@ -25,6 +25,7 @@ def list_doctors(
         result.append({
             "id": d.id,
             "name": d.name,
+            "email": user.email if user else None,
             "specialization": d.specialization,
             "experience_years": d.experience_years,
             "bio": d.bio,
@@ -142,7 +143,13 @@ def list_receptionists(
     result = []
     for r in receptionists:
         user = db.query(models.User).filter(models.User.id == r.user_id).first()
-        result.append({"id": r.id, "name": r.name, "phone": r.phone, "is_active": user.is_active if user else False})
+        result.append({
+            "id": r.id,
+            "name": r.name,
+            "email": user.email if user else None,
+            "phone": r.phone,
+            "is_active": user.is_active if user else False,
+        })
     return result
 
 
@@ -204,12 +211,26 @@ def remove_receptionist(
 
 
 # ---------- Manage Patients ----------
-@router.get("/patients", response_model=List[schemas.PatientOut])
+@router.get("/patients")
 def list_patients(
     current_user: models.User = Depends(require_role("admin")),
     db: Session = Depends(get_db),
 ):
-    return db.query(models.Patient).all()
+    patients = db.query(models.Patient).all()
+    result = []
+    for p in patients:
+        user = db.query(models.User).filter(models.User.id == p.user_id).first()
+        result.append({
+            "id": p.id,
+            "name": p.name,
+            "phone": p.phone,
+            "gender": p.gender,
+            "dob": p.dob,
+            "address": p.address,
+            "email": user.email if user else None,
+            "is_active": user.is_active if user else False,
+        })
+    return result
 
 
 # ---------- View All Appointments ----------
@@ -439,3 +460,55 @@ def admin_verify_payment(
     db.add(payment)
     db.commit()
     return payment_in
+
+# ---------- Admin: reset any patient / doctor / receptionist password ----------
+def _reset_user_password(db: Session, user_id: int, new_password: str):
+    if len(new_password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters.")
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User account not found")
+    user.password_hash = security.hash_password(new_password)
+    db.commit()
+
+
+@router.patch("/patients/{patient_id}/reset-password")
+def admin_reset_patient_password(
+    patient_id: int,
+    body: schemas.AdminPasswordReset,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    patient = db.query(models.Patient).filter(models.Patient.id == patient_id).first()
+    if not patient:
+        raise HTTPException(status_code=404, detail="Patient not found")
+    _reset_user_password(db, patient.user_id, body.new_password)
+    return {"detail": f"Password updated for {patient.name}"}
+
+
+@router.patch("/doctors/{doctor_id}/reset-password")
+def admin_reset_doctor_password(
+    doctor_id: int,
+    body: schemas.AdminPasswordReset,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    doctor = db.query(models.Doctor).filter(models.Doctor.id == doctor_id).first()
+    if not doctor:
+        raise HTTPException(status_code=404, detail="Doctor not found")
+    _reset_user_password(db, doctor.user_id, body.new_password)
+    return {"detail": f"Password updated for {doctor.name}"}
+
+
+@router.patch("/receptionists/{receptionist_id}/reset-password")
+def admin_reset_receptionist_password(
+    receptionist_id: int,
+    body: schemas.AdminPasswordReset,
+    current_user: models.User = Depends(require_role("admin")),
+    db: Session = Depends(get_db),
+):
+    receptionist = db.query(models.Receptionist).filter(models.Receptionist.id == receptionist_id).first()
+    if not receptionist:
+        raise HTTPException(status_code=404, detail="Receptionist not found")
+    _reset_user_password(db, receptionist.user_id, body.new_password)
+    return {"detail": f"Password updated for {receptionist.name}"}

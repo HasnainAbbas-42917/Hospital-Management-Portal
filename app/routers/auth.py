@@ -3,6 +3,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from app.database import get_db
 from app import models, schemas, security
+import time as _time
+from collections import defaultdict
+from sqlalchemy import func
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -55,3 +58,60 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
     token = security.create_access_token({"sub": str(user.id), "role": user.role.value})
     return schemas.Token(access_token=token, role=user.role)
+
+# ---------- Forgot password (patients only, identity-verified) ----------
+_reset_attempts = defaultdict(list)
+MAX_RESET_ATTEMPTS = 5
+RESET_WINDOW_SECONDS = 15 * 60
+
+
+def _too_many_attempts(key: str) -> bool:
+    now = _time.time()
+    recent = [t for t in _reset_attempts[key] if now - t < RESET_WINDOW_SECONDS]
+    _reset_attempts[key] = recent
+    return len(recent) >= MAX_RESET_ATTEMPTS
+
+
+def _digits(value) -> str:
+    return "".join(ch for ch in (value or "") if ch.isdigit())
+
+
+@router.post("/forgot-password")
+def forgot_password(data: schemas.ForgotPasswordRequest, db: Session = Depends(get_db)):
+    key = data.email.lower()
+
+    if _too_many_attempts(key):
+        raise HTTPException(
+            status_code=429,
+            detail="Too many attempts. Please try again in 15 minutes or contact the hospital administration.",
+        )
+
+    if len(data.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Password must be at least 6 characters.")
+
+    user = db.query(models.User).filter(func.lower(models.User.email) == key).first()
+
+    patient = None
+    if user and user.is_active and getattr(user.role, "value", user.role) == "patient":
+        patient = db.query(models.Patient).filter(models.Patient.user_id == user.id).first()
+
+    # Compare last 10 digits so "0300-1234567" and "+92 300 1234567" both match
+    verified = bool(
+        patient
+        and patient.phone
+        and patient.dob
+        and _digits(patient.phone)[-10:] == _digits(data.phone)[-10:]
+        and patient.dob == data.dob
+    )
+
+    if not verified:
+        _reset_attempts[key].append(_time.time())
+        raise HTTPException(
+            status_code=400,
+            detail="We could not verify these details. Please check them or contact the hospital administration.",
+        )
+
+    user.password_hash = security.hash_password(data.new_password)
+    db.commit()
+    _reset_attempts.pop(key, None)
+    return {"detail": "Password updated. You can now log in with your new password."}

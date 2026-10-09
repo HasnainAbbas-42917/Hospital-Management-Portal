@@ -205,3 +205,14 @@ class ReceptionistCreate(BaseModel):
 class ReceptionistProfileUpdate(BaseModel):
     name: Optional[str] = None
     phone: Optional[str] = None
+
+    # ---------- Password reset ----------
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+    phone: str
+    dob: date
+    new_password: str
+
+
+class AdminPasswordReset(BaseModel):
+    new_password: str

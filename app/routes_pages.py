@@ -106,3 +106,7 @@ def doctor_patients(request: Request):
 @router.get("/patient/records", response_class=HTMLResponse, include_in_schema=False)
 def patient_records(request: Request):
     return templates.TemplateResponse(request, "patient/records.html", {"active": "records"})
+
+@router.get("/forgot-password", response_class=HTMLResponse, include_in_schema=False)
+def forgot_password_page(request: Request):
+    return templates.TemplateResponse(request, "forgot_password.html", {})

@@ -16,9 +16,10 @@
       <p>One place for patients to find the right doctor, and for staff to manage every appointment — simply and reliably.</p>
     </div>
 
-    <div class="auth-form-side">
+       <div class="auth-form-side">
       <div class="auth-form-box">
         <a href="/" class="back-to-home">&larr; Back to Home</a>
+
         <div class="role-tabs" id="roleTabs">
           <button type="button" class="role-tab active" data-role="Patient">Patient</button>
           <button type="button" class="role-tab" data-role="Doctor">Doctor</button>
@@ -44,15 +45,15 @@
               <button type="button" class="password-toggle" onclick="togglePassword('password', this)">&#128065;</button>
             </div>
           </div>
+          <div class="form-meta-row">
+            <a href="/forgot-password">Forgot password?</a>
+          </div>
           <button type="submit" class="btn btn-primary btn-block">Log in</button>
         </form>
 
-        <p class="text-muted mt-24">
-          Don't have an account? <a href="/register">Register here</a>
-        </p>
+        <p class="auth-switch">Don't have an account? <a href="/register">Register here</a></p>
       </div>
     </div>
-  </div>
 
   <footer class="portal-footer" style="margin-top:0; padding:16px; border-top:none;">
     <strong>Hospital Portal</strong> — Patient, Doctor, Receptionist & Admin access

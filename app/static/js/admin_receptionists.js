@@ -7,17 +7,21 @@ async function loadReceptionists() {
       listBox.innerHTML = `<div class="empty-state"><h3>No receptionists yet</h3><p>Click "+ Add Receptionist" to create the first account.</p></div>`;
       return;
     }
-    listBox.innerHTML = receptionists.map((r) => `
-      <div class="appointment-item flex-between">
+       listBox.innerHTML = receptionists.map((r) => `
+      <div class="appointment-item flex-between" style="flex-wrap:wrap;">
         <span>
           <strong>${r.name}</strong>
           ${!r.is_active ? `<span class="badge badge-cancelled" style="margin-left:8px;">deactivated</span>` : ""}
+          <div class="appt-meta">${r.email || ""}</div>
           <div class="appt-meta">Phone: ${r.phone || "Not provided"}</div>
         </span>
-        ${r.is_active
-          ? `<button class="btn btn-danger" onclick="deactivateReceptionist(${r.id})">Deactivate</button>`
-          : `<button class="btn btn-primary" onclick="reactivateReceptionist(${r.id})">Reactivate</button>`
-        }
+        <span style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-secondary" onclick="openResetPassword('receptionists', ${r.id}, '${(r.name || "").replace(/'/g, "")}')">Reset password</button>
+          ${r.is_active
+            ? `<button class="btn btn-danger" onclick="deactivateReceptionist(${r.id})">Deactivate</button>`
+            : `<button class="btn btn-primary" onclick="reactivateReceptionist(${r.id})">Reactivate</button>`
+          }
+        </span>
       </div>
     `).join("");
   } catch (err) {
